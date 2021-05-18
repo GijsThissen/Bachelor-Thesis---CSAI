@@ -11,21 +11,28 @@ Some room for acknowledgements.
 
 \section{Introduction}
 
+early linguistics vs early sign language study
+
 
 
 \section{Related Work}
 
-
+Stokoe, W., Jr.
+1960. Sign Language Structure: An Outline of the Visual Communication
+Systems of the American Deaf. (Studies in linguistics: occasional papers
+8) Buffalo, NY: University of Buffalo. [Rev. edn., Silver Spring, MD: Linstok
+Press, 1978].
+sign language us actually a language
 
 \section{Experimental Setup}
 
 
 
 \subsection{Data}
-\hfill
+
 \subsubsection{Source}
 
-The data consists of $405$ EAF-files (ELAN Annotation Files) gathered by the Institute for German Sign Language and Communication of the Deaf at Hamburg University \cite{prillwitz2008dgs}. These files consist of a total of $50$ hours of annotated recordings spanning a wide range of narrations regarding the cultural aspects of the deaf community. The interviews were conducted using a peer-to-peer procedure, where participant change roles according to the conversation \cite{prillwitz2008dgs}. During a discussion $2$ German Sign Language or Deutsche Gebärdensprache (DGS) signers conversed. Each conversation consisted of a standardized interview covering linguistical and social data \cite{deaf_areas}. Following this conversation a spontaneous conversation on a given topic was held while the participants were encouraged to use as much basic vocabulary as possible \cite{deaf_areas}. In the EAF-files the signers are annotated as either Speaker A or Speaker B. The data was collected between January $2010$ and December $2011$  by videotaping $330$ participants from all $16$ Federated States (Bundesländer). The recordings were conducted using a mobile field lab in:
+The data consists of $405$ EAF-files (ELAN Annotation Files) gathered by the Institute for German Sign Language and Communication of the Deaf at Hamburg University \cite{prillwitz2008dgs}. These files consist of a total of $50$ hours of annotated recordings spanning a wide range of narrations regarding the cultural aspects of the deaf community. The interviews were conducted using a peer-to-peer procedure, where participant change roles according to the conversation \cite{prillwitz2008dgs}. During a discussion $2$ German Sign Language or Deutsche Gebärdensprache (DGS) signers conversed. Each conversation consisted of a standardized interview covering linguistical and social data \cite{deaf_areas}. Following this conversation, a spontaneous conversation on a given topic was held while the participants were encouraged to use as much basic vocabulary as possible \cite{deaf_areas}. In the EAF-files the signers are annotated as either Speaker A or Speaker B. The data was collected between January $2010$ and December $2011$  by videotaping $330$ participants from all $16$ Federated States (Bundesländer). The recordings were conducted using a mobile field lab in:
 
 \begin{itemize}
   \item Areas with a relatively high deaf population density (deaf schools, deaf centres, and deaf institutes). \cite{age_data_hamburg} \cite{deaf_areas}
@@ -74,7 +81,7 @@ The data consists of $405$ EAF-files (ELAN Annotation Files) gathered by the Ins
 \end{figure}
 
 \subsubsection{ELAN}
-The conversation conducted between the representatives of the deaf community have been annotated and stored in EAF-files. These EAF-files can be shown and edited using the ELAN software \cite{crasborn2008enhanced}. ELAN is a multimedia annotation software developed by \citep{elan_software} to assist in Linguistical studies, language conservation, and sign language research \cite{brugman2004annotating}. The software can be used to add annotations to video and/or audio recordings. An annotation can be a sentence, word, or in the case of sign language, a gloss. Using ELAN multiple annotations can be created that are sorted into tiers \cite{crasborn2008enhanced}.  
+The conversation conducted between the representatives of the deaf community has been annotated and stored in EAF-files. These EAF-files can be shown and edited using the ELAN software \cite{crasborn2008enhanced}. ELAN is a multimedia annotation software developed by \citep{elan_software} to assist in Linguistical studies, language conservation, and sign language research \cite{brugman2004annotating}. The software can be used to add annotations to video and/or audio recordings. An annotation can be a sentence, word, or in the case of sign language, a gloss. Using ELAN multiple annotations can be created that are sorted into tiers \cite{crasborn2008enhanced}.  
 
 % EAF-example
 \begin{figure}[h]
@@ -86,10 +93,10 @@ The conversation conducted between the representatives of the deaf community hav
 
 \subsubsection{Initial Translation}
 
-The annotations divided into tiers are presented across a timeline. As can be seen in \autoref{fig:elan_example} these files are divided into $11$ different tiers, presented in both English and German due to accessibility \cite{konradoffentliches}. Take "Lexem\_Gebärde\_r\_A" for example, this tier is translated into English as "Lexeme\_Sign\_r\_A". The tiers present in the EAF-files, translated into English, are: "Time", "Sign\_l\_B", "Sign\_r\_B", "Lexeme\_Sign\_l\_B", "Lexeme\_Sign\_r\_B", 
-"Translation\_into\_English\_B", "Sign\_l\_A", "Sign\_r\_A", "Lexeme\_Sign\_l\_A", "Lexeme\_Sign\_r\_A", and "Translation\_into\_English\_A" \cite{sloetjes2017elan}. The goal of this paper is to, through experimentation, show to what extent temporal data aids in the performance of a machine translation system for sign language glosses to text. For this purpose both the German Sign Language and the German Language were chosen respectively. Since the target language is German it was decided to use the original glosses and translations that were available in the corpus.
+The annotations divided into tiers are presented across a timeline. As can be seen in \autoref{fig:elan_example}these files are divided into $11$ different tiers, presented in both English and German due to accessibility \cite{konradoffentliches}. Take "Lexem\_Gebärde\_r\_A" for example, this tier is translated into English as "Lexeme\_Sign\_r\_A". The tiers present in the EAF-files, translated into English, are: "Time", "Sign\_l\_B", "Sign\_r\_B", "Lexeme\_Sign\_l\_B", "Lexeme\_Sign\_r\_B", 
+"Translation\_into\_English\_B", "Sign\_l\_A", "Sign\_r\_A", "Lexeme\_Sign\_l\_A", "Lexeme\_Sign\_r\_A", and "Translation\_into\_English\_A" \cite{sloetjes2017elan}. The goal of this paper is to, through experimentation, show to what extent temporal data aids in the performance of a machine translation system for sign language glosses to text. For this purpose, both the German Sign Language and the German Language were chosen respectively. Since the target language is German it was decided to use the original glosses and translations that were available in the corpus.
 
-The initial translation of the glosses in the data set (i.e.: Sign\_l\_A to Translation\_into\_English) was conducted by contracted sign language translators, and interpreters \cite{konradoffentliches}. These researchers translated the data set word-for-word. Consequently, university students created coherent meaningful sentence like structures. Lastly these sentences were fed back into the system until the proper meaning was determined by the DGS-experts (\autoref{fig:uselesspipeline}) \cite{konradoffentliches}.
+The initial translation of the glosses in the data set (i.e.: Sign\_l\_A to Translation\_into\_English) was conducted by contracted sign language translators and interpreters \cite{konradoffentliches}. These researchers translated the data set word-for-word. Consequently, university students created coherent meaningful sentence like structures. Lastly, these sentences were fed back into the system until the proper meaning was determined by the DGS experts (\autoref{fig:uselesspipeline}) \cite{konradoffentliches}.
 
 \begin{figure}[h]
  \centering 
@@ -98,17 +105,33 @@ The initial translation of the glosses in the data set (i.e.: Sign\_l\_A to Tran
  \label{fig:uselesspipeline}
 \end{figure}
 
-\subsubsection{Lemmatisation and Gloss convention}
+\subsubsection{Segmentation}
+
+As with spoken languages, sign languages tend not to have a naturally occurring white space character \cite{hankesegmentation} \cite{konradoffentliches}. Thus it is difficult to determine where a sign begins and where a sign ends. In this situation, the segmentator has two options: either add a gap or none at all. Unlike spoken languages, when a participant is signing two words, take TREE (rest your right forearm upon your left palm and twist) \cite{perniss2007space} and COW (make two horns using your thumb and little finger on top of your head), for example. There is a transitional period where the participant moves his or her arm from one sign to the next. When adding a gap between the signs, the segmentator determines that the transitional movements are not part of the token's form \cite{konradoffentliches}. Taking this into account researchers at the University of Hamburg have decided that for the creation of the DGS corpus gaps will be added. The direct result of this decision is located in the EAF files, where there is temporal data with no associated annotations.
+
+\subsubsection{Lemmatisation and Gloss conventions}
+
+When creating a corpus there is an intrinsic need to have conventions in place to make sure a uniform dataset is created. \cite{konradoffentliches} Therefore it is necessary to employ linguistics to standardise glosses using gloss conventions: \cite{kristoffersen2016designing}
+
+\begin{itemize}
+    \item In the field of Linguistics or more specifically in the field of lexicography, a lexical item forms the basic element of the lexicon of a language. Lexical signs are treated as items, that is as units of their respective sign language that would be found in the dictionary \cite{konradoffentliches}. When a deaf person signs SQUARE1\textasciicircum  it may mean different things such as map, recipe, or page. In DGS \cite{perniss2007space} and several other European Sign Languages signs are iconically motivated \cite{pietrandrea2002iconicity} \cite{oomen2017iconicity}, meaning that there is a similarity between the form of the sign and the meaning of the sign. In the DGS corpus, type glosses are given an indication of iconic value by using a circumflex at the end: "SQUARE1\textasciicircum ". Examples of child types to the SQUARE1\textasciicircum parent type are: FORM1, MIRROR2, and PAPER4, these and all other non-circumflex glosses are sub types. The numbers denote different lexical variants.
+    \item Fully iconically motivated signs, also known as poly-morphemic signs, are denoted as productive signs in contrast to lexical signs that denote something instead of meaning. Productive signs therefore have a \$PROD token \cite{konradoffentliches}
+    \item Due to the anonymisation laws present in Germany, where this corpus was created, all names are replaced by "\$NAME". Except when it concerns a famous person the \$NAME gloss is followed by the person's name. \cite{konradoffentliches}
+    \item Foreign language elements are represented using the INTS token, for example, when signing the English word Germany instead of "Deutschland" it has been written as GERMANY-INST1.\cite{konradoffentliches}
+    \item In German Sign Language it is conventional to use a one-handed manual alphabet, for example when spelling out someones name. For these situations the \$ALPHA token is used. Numbers are presented in a similar manner by using \$NUM. \cite{konradoffentliches}  
+\end{itemize}
+
+Taking into account these points a uniform corpus was created with annotated signs presented on a timeline. An example of an annotated DGS sentence can be seen in \autoref{fig:sentence_example}.
+
+\begin{figure}[h]
+ \centering 
+ \includegraphics[width=14cm]{Bachelor CSAI thesis template/images/sentence_example.png}
+ \caption{Showing an example sentence of the annotated corpus in DGS glosses. The German translation of this gloss sentence is: "Und dann fällt es einem wieder auf, dass der andere noch Fehler macht" \cite{dgscorpus_3}. (English translation: And then one notices again, that the other (person) is still making mistakes). 1. A token denoting a gesture. 2. The sign annotated as NM has iconic meaning. 3. One of several lexical variants of the lexical unit FEHLER. }
+ \label{fig:sentence_example}
+\end{figure}
 
 \subsubsection{Pre-Processing}
-Using the ELAN-software $7$ of the $11$ tiers were selected and converted into a CSV-file. This creates $2$ distinct CSV-files that were consequently merged (\autoref{apx:first}). Due to being able to access the timeline in ELAN it is possible to extract the temporal features of a given annotation.
- 
-
-
-
-eaf files
-elan
-bpe - tokenizing preprocessing
+Using the ELAN software $7$ of the $11$ tiers were selected and converted into a CSV file. This creates $2$ distinct CSV files that were consequently merged (\autoref{apx:first}). Due to being able to access the timeline in ELAN, it is possible to extract the temporal features of a given annotation. As mentioned before the  bpe - tokenizing preprocessing
 
 
 \subsection{Method / Models}
@@ -118,7 +141,7 @@ opennmt
 -removed white spaces and "nan" to equalize the parallel corpi
 -bpe
 
-features in tranlsation
+features in translation
 bpe
 sentencepiece
 
