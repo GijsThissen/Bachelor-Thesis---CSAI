@@ -5,9 +5,9 @@
 Foremost, I would like to express my gratitude towards all persons that helped me during the creation of this thesis. From helping me with finding the topic to helping me correct my mistakes while programming the algorithms used in this thesis. 
 \\
 
-I would like to especially thank my research supervisor Dr. Dimitar Shterionov (Professor at Tilburg University) for the guidance given by helping me both with the research for this topic and correcting my many mistakes while coding. 
+I would like to especially thank my research supervisor \textbf{Dr. Dimitar Shterionov} (Professor at Tilburg University) for the guidance given by helping me both with the research for this topic and correcting my many mistakes while coding. 
 
-I am grateful to my fellow Thesis colleagues Stan van der Vossen (CSAI-Student) and Jakob E. Hauser (CSAI-Student) for the advice, translating sporadic German to English, and guidance given towards solving the problems I faced during the creation of this Thesis paper.
+I am grateful to my fellow Thesis colleagues \textbf{Stan van der Vossen} (CSAI-Student) and \textbf{Jakob E. Hauser} (CSAI-Student) for the advice, translating sporadic German to English, and guidance given towards solving the problems I faced during the creation of this Thesis paper.
 
 Lastly, even though they are unaware of me writing this Thesis paper, I would like to express my gratitude towards all the researchers that aided in the creation of the DGS-Korpus and especially by making it available online to the public.
 
@@ -207,12 +207,9 @@ Using the ELAN software $7$ of the $11$ tiers were selected and converted into a
 
 \subsubsection{Data splitting}
 
-After merging the data, the dataframe contains $5$ columns. As has been described $4$ experiments are to be performed: Sign, Temporal, Vocal, and Combined. For each of these experiments two files are need: a Source file (.src) , and a Target file (.trg). These files are fully extracted from the dataframe. By isolating the sentences in the dataframe it is possible to create a separate sentence set for every sentence. This will result in $5$ files: normal.en, vocal.en, times.en, combined.en and sentences.nl. 
+After merging the data, the dataframe contains $5$ columns. As has been described $4$ experiments are to be performed: Sign, Temporal, Vocal, and Combined. For each of these experiments two files are need: a Source file (.src) , and a Target file (.trg). These files are fully extracted from the dataframe. By isolating the sentences in the dataframe it is possible to create a separate sentence set for every sentence. This will result in $5$ files: normal.en, vocal.en, times.en, combined.en and sentences.nl. "sentences.nl" is the target file for all the experiments and is therefore uniform.
 
-tokenizing
-train test splitting
-
-
+To tokenize and split the data the \texttt{train\_test\_dev.py} (SOURCE NEEDED) script was used to both tokenize and split the data into a training, a validation, and a testing file. Since the data set only has $60000$ sentences it was decided to split the data into only 500 sentences for validation and testing each.  
 
 
 
@@ -224,12 +221,35 @@ limitations for token adding (elk woord heeft hetzelfde aantal tokens nodig)
 
 \subsection{Parameters and Architecture}
 
+\begin{table}[h]
+\centering
+\begin{tabular}{|ll|ll|}
+\hline
+\multicolumn{1}{|l|}{Parameter} & Setting     & \multicolumn{1}{l|}{Parameter} & Setting              \\ \hline
+Encoder type                    & Transformer & Batch size                     & 1024                 \\
+Decoder type                    & Transformer & Batch type                     & tokens               \\
+Transformer feed-forward        & 2048        & Normalization                  & tokens               \\
+Layers                          & 6           & Warm-up steps                  & 8000                 \\
+Heads                           & 8           & Training steps                 & 20000                \\
+RNN size                        & 512         & Validation steps               & 1000                 \\
+Word embedding size             & 512         & Label smoothing                & 0.1                  \\
+Position encoding               & True        & World size                     & 1                    \\
+Maximum generator batches       & 2           & GPU rank                       & 0                    \\
+Dropout probability             & 0.1         & Early stopping                 & 5                    \\
+Optimization method             & adam        & Early Stopping criteria        & perplexity, accuracy \\
+Adam beta2 parameter            & 0.998       & Max gradient norm              & 0                    \\
+Decay Method                    & noam        & Parameters initialized at      & 0                    \\
+Learning rate                   & 2           & Parameters\_init\_glorot       & True                 \\ \hline
+\end{tabular}
+\caption{Showing the parameters used for training using the Transformer architecture.The batch size is small since the GPU used for training had only 4GB of VRAM (NVIDIA GTX 980).}
+\label{tab:parameter}
+\end{table}
+
 \subsection{BLEU}
 
+BLEU is short for Bilingual Evaluation Understudy and is an evaluation metric for Neural Machine Translation. \cite{papineni2002bleu} 
+
 \subsection{TER}
-opennmt 
--removed white spaces and "nan" to equalize the parallel corpi
--bpe
 
 
 \section{Results}
@@ -300,7 +320,7 @@ schrijf een stuk over wat er gebeurt als je dat hele ding standardised
 \input{bib-apx.tex}
 
 \appendixsection{Merging Code} \label{apx:first}
-\begin{lstlisting}[language=Python, caption=Section 6. Shown is the Python code to merge the multiple CSV-files into one DataFrame.]
+\begin{lstlisting}[language=Python, caption=Shown is the Python code to merge the multiple CSV-files into one DataFrame.]
 class create_file(object):
     def __init__(self, path="datasets/"):
         self.path = path
@@ -385,5 +405,41 @@ class create_file(object):
 
         return final_dataframe
 \end{lstlisting}
- 
+ \break
+\appendixsection{Fixing} \label{apx:fixing}
+\begin{lstlisting} [language=Python, caption=Shown is the Python code to fix the false white lines created by the train\_test\_dev.py script.]
+def fixing():
+    """
+    Fixes files by removing the extra \n that was created during the train_test_dev.py splitting of the data. OpenNMT
+    does not handle empty lines well and will assign "translations".
+    """
+    # Get current working directory
+    working_directory = str(os.getcwd())
 
+    # Calculate the total amount of files in the working directory
+    dataset = os.listdir(str(working_directory))
+    total = len(dataset)
+
+    print("\nDeleting white spaces in files\n")
+
+    # Source (regarding the lines of code related to the tqdm-libary):
+    # DDGG. (2018, Feb 22) tqdm not showing bar. Stackoverflow.com.
+    # https://stackoverflow.com/questions/48935907/tqdm-not-showing-bar
+
+    with tqdm(total = total) as pbar:
+        for element in dataset:
+            # Create new name
+            new_name = "f-" + element
+            with open(str(element), "r", encoding="utf-8") as f:  # Read from this file
+                with open(str(new_name), "w+", encoding="utf-8") as fixed:  # Write in this file
+                    # Removing all the extra white spaces
+                    while True:
+                        line = f.readline()
+                        if line == "":
+                            break
+                        if line == "nan\n":
+                            continue
+                        if not line.isspace() and line != "nan":
+                            fixed.write(line)
+            pbar.update(1) # Update pbar by 1
+\end{lstlisting}
