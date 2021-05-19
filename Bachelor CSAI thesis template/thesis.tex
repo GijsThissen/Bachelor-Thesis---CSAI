@@ -32,9 +32,6 @@ GLOSSES
 \subsection{Machine Translation}
 basic NMT and NLP
 
-\subsection{LSTM and Transfomer architecture}
-zowel basic lstm en transformer
-
 \subsection{Research Question}
 
 \textbf{To what extent does temporal data aid in the performance of a machine translation system for sign language glosses to text?}
@@ -55,8 +52,11 @@ zowel basic lstm en transformer
 
 \section{Related Work}
 
+\subsection{LSTM}
+zowel basic lstm en transformer
+
 \subsection{Transformers}
-machine translation en transformers
+machine translation en transformers \cite{vaswani2017attention}
 
 \subsection{Sign Language Translation}
 
@@ -92,6 +92,7 @@ The data consists of $405$ EAF-files (ELAN Annotation Files) gathered by the Ins
     }\mydata
 
 \begin{figure}[h]
+\caption{Showing the percentage of participants per age , divided into both the Male (shown in Purple) and Female (shown in Red) gender,  that participated in the creation of the DGS corpus (both annotated and non-annotated). \cite{age_data_hamburg}}
 \begin{tikzpicture}
     \begin{axis}[
             ybar,
@@ -115,7 +116,7 @@ The data consists of $405$ EAF-files (ELAN Annotation Files) gathered by the Ins
     \end{axis}
     
 \end{tikzpicture}
-\caption{Showing the percentage of participants per age , divided into both the Male (shown in Purple) and Female (shown in Red) gender,  that participated in the creation of the DGS corpus (both annotated and non-annotated). \cite{age_data_hamburg}}
+
 \label{fig:bundeslander}
 \end{figure}
 
@@ -124,9 +125,10 @@ The conversation conducted between the representatives of the deaf community has
 
 % EAF-example
 \begin{figure}[h]
+\caption{Showing the structure of one of the EAF (English Annotated File)-files \cite{elan_example} inside the program ELAN. ELAN is a multimedia annotation tool used for multi-modality research \cite{sloetjes2017elan}. }
  \centering 
  \includegraphics[width=14cm]{Bachelor CSAI thesis template/images/ELAN_example.jpg}
- \caption{Showing the structure of one of the EAF (English Annotated File)-files \cite{elan_example} inside the program ELAN. ELAN is a multimedia annotation tool used for multi-modality research \cite{sloetjes2017elan}. }
+ 
  \label{fig:elan_example}
 \end{figure}
 
@@ -138,9 +140,10 @@ The annotations divided into tiers are presented across a timeline. As can be se
 The initial translation of the glosses in the data set (i.e.: Sign\_l\_A to Translation\_into\_English) was conducted by contracted sign language translators and interpreters \cite{konradoffentliches}. These researchers translated the data set word-for-word. Consequently, university students created coherent meaningful sentence like structures. Lastly, these sentences were fed back into the system until the proper meaning was determined by the DGS experts (\autoref{fig:uselesspipeline}) \cite{konradoffentliches}.
 
 \begin{figure}[h]
+\caption{Showing the translation pipeline of the initial translation phase as conducted by the Institute for German Sign Language and Communication of the Deaf at Hamburg University. \cite{konradoffentliches} }
  \centering 
  \includegraphics[width=14cm]{Bachelor CSAI thesis template/images/translation_pipeline.png}
- \caption{Showing the translation pipeline of the initial translation phase as conducted by the Institute for German Sign Language and Communication of the Deaf at Hamburg University. \cite{konradoffentliches} }
+ 
  \label{fig:uselesspipeline}
 \end{figure}
 
@@ -163,9 +166,10 @@ When creating a corpus there is an intrinsic need to have conventions in place t
 Taking into account these points a uniform corpus was created with annotated signs presented on a timeline. An example of an annotated DGS sentence can be seen in \autoref{fig:sentence_example}.
 
 \begin{figure}[h]
+\caption{Showing an example sentence of the annotated corpus in DGS glosses. The German translation of this gloss sentence is: "Und dann fällt es einem wieder auf, dass der andere noch Fehler macht" \cite{dgscorpus_3}. (English translation: And then one notices again, that the other (person) is still making mistakes). 1. A token denoting a gesture. 2. The sign annotated as NM has iconic meaning. 3. One of several lexical variants of the lexical unit FEHLER.}
  \centering 
  \includegraphics[width=14cm]{Bachelor CSAI thesis template/images/sentence_example.png}
- \caption{Showing an example sentence of the annotated corpus in DGS glosses. The German translation of this gloss sentence is: "Und dann fällt es einem wieder auf, dass der andere noch Fehler macht" \cite{dgscorpus_3}. (English translation: And then one notices again, that the other (person) is still making mistakes). 1. A token denoting a gesture. 2. The sign annotated as NM has iconic meaning. 3. One of several lexical variants of the lexical unit FEHLER.}
+ 
  \label{fig:sentence_example}
 \end{figure}
 
@@ -173,7 +177,7 @@ Taking into account these points a uniform corpus was created with annotated sig
 
 \subsection{Experiments}
 
-There are $4$ experiments to be carried out. \autoref{fig:baseline_comparison}
+To answer the (sub-) research questions, experiments are needed. There are $4$ experiments with accompanying text structure (\autoref{fig:baseline_comparison}). These experiments are described below.
 
 \subsubsection{Baseline}
 
@@ -193,9 +197,10 @@ Another sub-goal of this thesis paper is to show to what extent adding extra tok
 Research has shown that talking speed is affected by emotions \cite{kshirsagar2002multilayer}. The combination experiment is an experiment that combines the previously mentioned temporal and vocal features into one model.  The data will be seperated by a "|" and be processed in a GLOSS|vocal|TIME format. The same conditions apply on the combined model as applied on the vocal and temporal model. The combined data files consist of glosses formed into a sentence with added vocal and temporal data and their German translation as the target (Source: PRIVAT1A*|privat|340 FAMILIE1|familie|460 Target: Privates oder Familie? \cite{dgscorpus_3}).
 
 \begin{figure}[h]
+\caption{Showing the source file textual comparison between the Baseline, Temporal, Vocal, and Combined experiments. In the temporal experiment the concept of time is added (in ms). In the vocal experiment the concept of spoken words is added (in lowercase letters). In the combined experiment these are combined into one.}
  \centering 
  \includegraphics[width=14cm]{Bachelor CSAI thesis template/images/baseline_compared.PNG}
- \caption{Showing the source file textual comparison between the Baseline, Temporal, Vocal, and Combined experiments. In the temporal experiment the concept of time is added (in ms). In the vocal experiment the concept of spoken words is added (in lowercase letters). In the combined experiment these are combined into one.}
+ 
  \label{fig:baseline_comparison}
 \end{figure}
 
@@ -209,19 +214,27 @@ Using the ELAN software $7$ of the $11$ tiers were selected and converted into a
 
 After merging the data, the dataframe contains $5$ columns. As has been described $4$ experiments are to be performed: Sign, Temporal, Vocal, and Combined. For each of these experiments two files are need: a Source file (.src) , and a Target file (.trg). These files are fully extracted from the dataframe. By isolating the sentences in the dataframe it is possible to create a separate sentence set for every sentence. This will result in $5$ files: normal.en, vocal.en, times.en, combined.en and sentences.nl. "sentences.nl" is the target file for all the experiments and is therefore uniform.
 
-To tokenize and split the data the \texttt{train\_test\_dev.py} (SOURCE NEEDED) script was used to both tokenize and split the data into a training, a validation, and a testing file. Since the data set only has $60000$ sentences it was decided to split the data into only 500 sentences for validation and testing each.  
+To tokenize and split the data the \texttt{train\_test\_dev.py} (SOURCE NEEDED) script was used to both tokenize and split the data into a training, a validation, and a testing file. Since the data set only has $60000$ sentences it was decided to split the data into only 500 sentences for validation and testing each while the remaining $58000$ sentences were used for the training file.
 
+fixing.py 
+effects van witte regels op het systeem
 
 
 \subsubsection{BPE}
 
 \subsection{OpenNMT}
- preprocessing
-limitations for token adding (elk woord heeft hetzelfde aantal tokens nodig)
+ 
+To train the data a library is needed that both support Neural Machine Translation and support source word features. 
+ 
+preprocessing
+
 
 \subsection{Parameters and Architecture}
 
+Using the OpenNMT library \cite{klein-etal-2017-opennmt}
+
 \begin{table}[h]
+\caption{Showing the parameters used for training using the Transformer architecture.The batch size is small since the GPU used for training had only 4GB of VRAM (NVIDIA GTX 980).}
 \centering
 \begin{tabular}{|ll|ll|}
 \hline
@@ -241,21 +254,62 @@ Adam beta2 parameter            & 0.998       & Max gradient norm              &
 Decay Method                    & noam        & Parameters initialized at      & 0                    \\
 Learning rate                   & 2           & Parameters\_init\_glorot       & True                 \\ \hline
 \end{tabular}
-\caption{Showing the parameters used for training using the Transformer architecture.The batch size is small since the GPU used for training had only 4GB of VRAM (NVIDIA GTX 980).}
+
 \label{tab:parameter}
 \end{table}
 
 \subsection{BLEU}
 
-BLEU is short for Bilingual Evaluation Understudy and is an evaluation metric for Neural Machine Translation. \cite{papineni2002bleu} 
+BLEU is short for Bilingual Evaluation Understudy and is an evaluation metric for Neural Machine Translation as described in \cite{papineni2002bleu}. As the name suggest it is a evaluation metric for a parallel bilingual system with a reference (original target file) and a hypothesis (predicted target file). Previously used metrics were human-based and could take weeks or even months to be calculated \cite{papineni2002bleu}. Thus BLEU was created, the idea behind the metric is that the closer a machine translation is to a professional (linguistic) human translation, the better it is. Therefore one has to measure how close the prediction is to the reference translations.
+
+\subsubsection{Weighted precision}
+BLEU makes use of the weighted precision score (\autoref{fig:weighted_precision}). The difference between the modified version and the normal version is that the modified version takes into account the maximum reference count \cite{chan}. If using multiple references the "normal" precision measure was used the sentence "dog dog dog dog dog dog dog" would be able to get a score of 1. This is especially true since Machine Translation systems tend to over-generate words that seem to fit in \cite{papineni2002bleu}.
+
+\begin{figure}[h]
+\caption{Showing the modified n-gram precision formula. The difference between the modified version and the normal version is that the modified version takes into account the maximum reference count, known as the clipped count. Candidates refers to the translated sentences \cite{chan} \cite{papineni2002bleu}. First compute the N-gram matches. Second add the clipped counts for all translated sentences. Third divide the sum by the total number of n-grams in the reference. \cite{chan}}
+ \centering 
+ \includegraphics[width=14cm]{Bachelor CSAI thesis template/images/weighted_precision.png}
+ \label{fig:weighted_precision}
+\end{figure}
+
+\subsubsection{Brevity penalty}
+Although not applicable in this paper, traditionally the BLEU-score was used to calculate the score of a prediction over multiple references. Since these references may or may not have variable length this will negatively affect the recall score \cite{papineni2002bleu} (Section 2.2). The proposed solution is the brevity penalty or BP for short as can be seen in (\autoref{fig:full_bleu}). The Brevity penalty high scoring translations must match the references in word order and length. Sentences smaller than the reference sentences are therefore penalized since they are multiplied by a factor < $1$. 
+
+
+\begin{figure}[h]
+ \caption{Showing the complete formula for calculating BLEU \cite{papineni2002bleu}. In the BP formula, c denotes the total length of the translation corpus, r is the sum of the best match lengths of the translation sentence in the test corpus \cite{papineni2002bleu}. If the BP value is 1 this means that the translation length and the reference length are equal if this is not the case the second formula will be used. The eventual BLEU-score is the average of the weighted precision scores times the brevity penalty, and therefore penalizes shorter sentences. }
+ \centering 
+ \includegraphics[width=14cm]{Bachelor CSAI thesis template/images/bleu_formula.PNG}
+ \label{fig:full_bleu}
+\end{figure}
+
+\subsubsection{BLEU-score}
+
+talk about this paper and the bleu score (it being one reference variant) and what to expect 1 being the best etc.
 
 \subsection{TER}
+
+Translation Edit Rate (TER) measures the amount of editing that needs to be done to create an output that exactly matches a reference translation \cite{TERsnover2006}. There can be multiple TER-scores since it may match one of the references, however, since in this paper only one reference will be used this will not be considered a problem. The formula to calculate the TER-score is shown in (\autoref{fig:full_ter}). The number of edits is calculated in two different phases \cite{shapira2002edit}:
+\begin{enumerate}
+    \item A greedy search algorithm is used to find the words that need to be shifted from one place to another.
+    \item An optimal calculation is made to calculate the smallest amount of remaining edits (insertion, deletion, and substitution) necessary to match the reference.
+\end{enumerate}
+
+As suggested by the formula
+
+\begin{figure}[h]
+ \caption{Showing the formula for calculating the TER score \cite{TERsnover2006}. The TER-score is calculated by dividing the number of edits by the average number of words in the reference translation. Possible edits are: insertion, deletion, substitution, and switching words around. All these edits have an equal cost.}
+ \centering 
+ \includegraphics[width=14cm]{Bachelor CSAI thesis template/images/ter_formula.PNG}
+ \label{fig:full_ter}
+\end{figure}
+
 
 
 \section{Results}
 
 \begin{table}
-    
+    \caption{Best performing models with the accompanying BLEU- and TER-scores. Highlighted in bold are the best results. As can be seen in the table the baseline outperforms all other models.}
     \label{tab:results}
     \begin{tabular}{llrr}
         \toprule
@@ -269,7 +323,7 @@ BLEU is short for Bilingual Evaluation Understudy and is an evaluation metric fo
     
         
     \end{tabular}
-    \caption{SCHRIJF HIER NOG IETS}
+    
 \end{table}
 
 \pgfplotstableread[row sep=\\,col sep=&]{
@@ -281,6 +335,7 @@ BLEU is short for Bilingual Evaluation Understudy and is an evaluation metric fo
     }\mydata
 
 \begin{figure}[h]
+\caption{Showing the results from the $4$ performed experiments. On the X-axis the different models are presented. On the Y-axis the score is shown (for the meaning of the TER and BLEU score: see their respective sections.)}
 \begin{tikzpicture}
     \begin{axis}[
             ybar,
@@ -304,7 +359,7 @@ BLEU is short for Bilingual Evaluation Understudy and is an evaluation metric fo
     \end{axis}
     
 \end{tikzpicture}
-\caption{Showing the results from the $4$ performed experiments. On the X-axis the different models are presented. On the Y-axis the score is shown (for the meaning of the TER and BLEU score: see their respective sections.)}
+
 \label{fig:results_graph}
 \end{figure}
 
