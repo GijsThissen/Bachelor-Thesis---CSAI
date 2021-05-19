@@ -9,7 +9,7 @@ I would like to especially thank my research supervisor \textbf{Dr. Dimitar Shte
 
 I am grateful to my fellow Thesis colleagues \textbf{Stan van der Vossen} (CSAI-Student) and \textbf{Jakob E. Hauser} (CSAI-Student) for the advice, translating sporadic German to English, and guidance given towards solving the problems I faced during the creation of this Thesis paper.
 
-Lastly, even though they are unaware of me writing this Thesis paper, I would like to express my gratitude towards all the researchers that aided in the creation of the DGS-Korpus and especially by making it available online to the public.
+Lastly, even though they are unaware of me writing this Thesis paper, I would like to express my gratitude towards all the researchers that aided in the creation of the DGS-Korpus and especially for making it available to the online public.
 
 \input{title.tex} % Yes, again
 
@@ -177,7 +177,7 @@ Taking into account these points a uniform corpus was created with annotated sig
 
 \subsection{Experiments}
 
-To answer the (sub-) research questions, experiments are needed. There are $4$ experiments with accompanying text structure (\autoref{fig:baseline_comparison}). These experiments are described below.
+To answer the (sub-) research questions, experiments are needed. Described below are $4$ experiments that have been designed to test the hypotheses, they differ mainly in data structure. A good overview of their differences can be found in (\autoref{fig:baseline_comparison}). 
 
 \subsubsection{Baseline}
 
@@ -216,12 +216,20 @@ After merging the data, the dataframe contains $5$ columns. As has been describe
 
 To tokenize and split the data the \texttt{train\_test\_dev.py} (SOURCE NEEDED) script was used to both tokenize and split the data into a training, a validation, and a testing file. Since the data set only has $60000$ sentences it was decided to split the data into only 500 sentences for validation and testing each while the remaining $58000$ sentences were used for the training file.
 
-An unwanted side-effect of the \texttt{train\_test\_dev.py} script is that it adds white spaces between the individual sentences in both the (train, test, dev) source files as the target files. This results in the Machine Translation system "assigning" sentences to these white spaces when training, resulting in a normal German sentence within a normal German sentence. For this reason all files are passed through the \texttt{fixing.py} script (\autoref{apx:fixing}) which will strip away all empty lines.
+An unwanted side-effect of the \texttt{train\_test\_dev.py} script is that it adds white spaces between the individual sentences in both the (train, test, dev) source files as the target files. This results in the Machine Translation system "assigning" sentences to these white spaces when training, resulting in a normal German sentence within a normal German sentence. For this reason all files are passed through the \texttt{fixing.py} script (\autoref{apx:fixing}) which will strip away all empty lines. Applying \texttt{fixing.py} on the data files significantly increases the BLEU-score for the Baseline model, while the old Baseline (pre-BPE, pre-fixing) had a BLEU score (See the section on BLEU-score for more details) of 1.27 the new Baseline (pre-BPE, post-fixing) had a BLEU score of 2.15, it was therefore decided to use the \texttt{fixing.py} on all data files.
 
 
 \subsubsection{BPE}
 
-\cite{sennrich2015neural}
+Byte Pair Encoding (BPE) is a general-purpose data compression algorithm \cite{sennrich2015neural} \cite{gage1994new}. The way it works is by replacing the most frequent pair of bytes in a sequence with unused bytes, in the case of the OpenNMT Byte Pair Encoding \cite{klein-etal-2017-opennmt} scripts the unused bytes were denoted in the data files as "@@ ". The advantages of using the BPE algorithm are:
+
+\begin{enumerate}
+    \item \textbf{Memory}. In the case of German, many words start with the unit "auf", by encoding this unit by only using $1$ symbol, the system only encounters one symbol instead of $3$. \cite{gage1994new}
+    \item \textbf{Out-of-vocabulary words (OOV)}. Taking into account the previous example, since the unit "auf" has been replaced by $1$ symbol encountering it will be familiar. This is because BPE allows for the encoding of rare words and will not introduce any unrecognised tokens. \cite{gage1994new} \cite{sennrich2015neural}
+\end{enumerate}
+
+Before being passed to the pre-processing and training, the data, except for the test.trg-file, was passed through a modified form of the BPE-algorithm. In normal circumstances when using BPE it causes no problems, however, when applying BPE to data containing word features it will split the word on the "|" character. The modified algorithm first double checks whether or not there is a temporal feature added to the word and if there is will join the word and its respective temporal feature together (\autoref{apx:bpemod}). Applying \texttt{fixing.py} on the data files significantly increases the BLEU-score for the Baseline model, while the old Baseline (pre-BPE, post-fixing) had a BLEU score 2.15, the new Baseline (post-BPE, post-fixing) had a BLEU-score of 3.69. It was therefore decided to use the Byte Pair Encoding algorithm to compress the data files.
+
 
 \subsection{OpenNMT}
  
@@ -366,11 +374,19 @@ Translation Edit Rate (TER) measures the amount of editing that needs to be done
 
 \section{Discussion}
 
+answer research question, hypothese
+
 gebarentaal dialect neit meegomen
 
 schrijf een stuk over wat er gebeurt als je dat hele ding standardised
 
+alternative bpe
+
+
+
 \section{Conclusion}
+
+\section{Self-Reflection}
 
 
 \input{bib-apx.tex}
@@ -498,4 +514,29 @@ def fixing():
                         if not line.isspace() and line != "nan":
                             fixed.write(line)
             pbar.update(1) # Update pbar by 1
+\end{lstlisting}
+
+\appendixsection{BPE Modification} \label{apx:bpemod}
+\begin{lstlisting}[language=Python, caption=Shown is the Python code that is a modification to the normal Byte Pair Encoding algorithm.]
+            #############
+            # Normal
+            #############
+            for item in new_word[:-1]:
+                output.append(item + self.separator)
+            output.append(new_word[-1])
+
+
+            ##############
+            # EDIT 11/05/2021 Gijs Thissen
+            # This is to "fix" the problems I am having with DGS glosses with features that get split up
+            # Run code above for the normal way
+            ##############
+            # If new_word contains more than one element (having one element suggest there not being a temporal feature)
+             if len(new_word)>1 and new_word[-1][-1].isdigit(): # Last element of last element of new_word is digit
+                 for item in new_word[:-1]:
+                     output.append(item + self.separator + new_word[-1])
+             else:
+                 for item in new_word[:-1]:
+                     output.append(item + self.separator)
+                 output.append(new_word[-1])
 \end{lstlisting}
