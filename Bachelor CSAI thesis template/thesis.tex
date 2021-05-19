@@ -61,7 +61,7 @@ machine translation en transformers \cite{vaswani2017attention}
 \subsection{Sign Language Translation}
 
 papers die hier precies mee te maken hebben
-
+\cite{garcia2016factored}
 
 
 
@@ -216,11 +216,12 @@ After merging the data, the dataframe contains $5$ columns. As has been describe
 
 To tokenize and split the data the \texttt{train\_test\_dev.py} (SOURCE NEEDED) script was used to both tokenize and split the data into a training, a validation, and a testing file. Since the data set only has $60000$ sentences it was decided to split the data into only 500 sentences for validation and testing each while the remaining $58000$ sentences were used for the training file.
 
-fixing.py 
-effects van witte regels op het systeem
+An unwanted side-effect of the \texttt{train\_test\_dev.py} script is that it adds white spaces between the individual sentences in both the (train, test, dev) source files as the target files. This results in the Machine Translation system "assigning" sentences to these white spaces when training, resulting in a normal German sentence within a normal German sentence. For this reason all files are passed through the \texttt{fixing.py} script (\autoref{apx:fixing}) which will strip away all empty lines.
 
 
 \subsubsection{BPE}
+
+\cite{sennrich2015neural}
 
 \subsection{OpenNMT}
  
@@ -268,7 +269,7 @@ BLEU makes use of the weighted precision score (\autoref{fig:weighted_precision}
 \begin{figure}[h]
 \caption{Showing the modified n-gram precision formula. The difference between the modified version and the normal version is that the modified version takes into account the maximum reference count, known as the clipped count. Candidates refers to the translated sentences \cite{chan} \cite{papineni2002bleu}. First compute the N-gram matches. Second add the clipped counts for all translated sentences. Third divide the sum by the total number of n-grams in the reference. \cite{chan}}
  \centering 
- \includegraphics[width=14cm]{Bachelor CSAI thesis template/images/weighted_precision.png}
+ \includegraphics[width=13cm]{Bachelor CSAI thesis template/images/weighted_precision.png}
  \label{fig:weighted_precision}
 \end{figure}
 
@@ -279,28 +280,28 @@ Although not applicable in this paper, traditionally the BLEU-score was used to 
 \begin{figure}[h]
  \caption{Showing the complete formula for calculating BLEU \cite{papineni2002bleu}. In the BP formula, c denotes the total length of the translation corpus, r is the sum of the best match lengths of the translation sentence in the test corpus \cite{papineni2002bleu}. If the BP value is 1 this means that the translation length and the reference length are equal if this is not the case the second formula will be used. The eventual BLEU-score is the average of the weighted precision scores times the brevity penalty, and therefore penalizes shorter sentences. }
  \centering 
- \includegraphics[width=14cm]{Bachelor CSAI thesis template/images/bleu_formula.PNG}
+ \includegraphics[width=12cm]{Bachelor CSAI thesis template/images/bleu_formula.PNG}
  \label{fig:full_bleu}
 \end{figure}
 
 \subsubsection{BLEU-score}
 
-talk about this paper and the bleu score (it being one reference variant) and what to expect 1 being the best etc.
+The BLEU score ranges from 0 to 1, with 0 being absolutely not related to the reference sentence and 1 being identical. For the purposes of this paper BLEU will be used on only $1$ reference since there is only one available per gloss sentence.
 
 \subsection{TER}
 
-Translation Edit Rate (TER) measures the amount of editing that needs to be done to create an output that exactly matches a reference translation \cite{TERsnover2006}. There can be multiple TER-scores since it may match one of the references, however, since in this paper only one reference will be used this will not be considered a problem. The formula to calculate the TER-score is shown in (\autoref{fig:full_ter}). The number of edits is calculated in two different phases \cite{shapira2002edit}:
+Translation Edit Rate (TER) measures the amount of editing that needs to be done to create an output that exactly matches a reference translation \cite{TERsnover2006}. There can be multiple TER-scores since it may match one of the references, however, since in this paper only one reference will be used this will not be considered a problem. The higher the TER-score the worse the translation, since the more edits on the total edits it needs to perform the closer it comes to $1$. The formula to calculate the TER-score is shown in (\autoref{fig:full_ter}). The number of edits is calculated in two different phases \cite{shapira2002edit}:
 \begin{enumerate}
     \item A greedy search algorithm is used to find the words that need to be shifted from one place to another.
     \item An optimal calculation is made to calculate the smallest amount of remaining edits (insertion, deletion, and substitution) necessary to match the reference.
 \end{enumerate}
 
-As suggested by the formula
+
 
 \begin{figure}[h]
  \caption{Showing the formula for calculating the TER score \cite{TERsnover2006}. The TER-score is calculated by dividing the number of edits by the average number of words in the reference translation. Possible edits are: insertion, deletion, substitution, and switching words around. All these edits have an equal cost.}
  \centering 
- \includegraphics[width=14cm]{Bachelor CSAI thesis template/images/ter_formula.PNG}
+ \includegraphics[width=12cm]{Bachelor CSAI thesis template/images/ter_formula.PNG}
  \label{fig:full_ter}
 \end{figure}
 
