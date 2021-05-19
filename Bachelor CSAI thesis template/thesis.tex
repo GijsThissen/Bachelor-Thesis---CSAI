@@ -15,11 +15,11 @@ Lastly, even though they are unaware of me writing this Thesis paper, I would li
 
 \begin{abstract}
 
+Sign languages are languages  that have their own unique grammar, words and manners of speaking and can be therefore completely distinct from the regional equivalent language. Most of the time the they live in a parallel worlds, with the deaf on one side and the hearing on another. When these worlds clash confusion arises because of the dissimilarity between the two, since they might not stem from the same language family. In recent years the field of neural machine translation has grown exponentially, with the invention of the transformer architecture increasing accuracy in parallel machine translation software. German Sign Language (DGS) and German are two distinct languages and are therefore subject to translation possibilities. The recent approaches mainly focuses on (German) text to (DGS) glosses. However,  there has been a lack of a glosses-to-text translation systems. The focus of this paper is find the best approach by adding temporal, vocal, or combined vocal and temporal data to the glosses of the DGS Public Korpus. The results show that adding these extra tokens to the data results in a less accurate translation over all models. The neural machine translation system with an input of nothing but glosses [BLEU 3.69, TER 0.960] outperforms the more complex models [average BLEU 2.19, average TER 0.981]. 
+
 \end{abstract}
 
 \section{Introduction}
-
-\subsection{Deaf communication}
 
 \subsection{Study of sign language}
 early linguistics vs early sign language study
@@ -216,7 +216,7 @@ After merging the data, the dataframe contains $5$ columns. As has been describe
 
 To tokenize and split the data the \texttt{train\_test\_dev.py} (SOURCE NEEDED) script was used to both tokenize and split the data into a training, a validation, and a testing file. Since the data set only has $60000$ sentences it was decided to split the data into only 500 sentences for validation and testing each while the remaining $58000$ sentences were used for the training file.
 
-An unwanted side-effect of the \texttt{train\_test\_dev.py} script is that it adds white spaces between the individual sentences in both the (train, test, dev) source files as the target files. This results in the Machine Translation system "assigning" sentences to these white spaces when training, resulting in a normal German sentence within a normal German sentence. For this reason all files are passed through the \texttt{fixing.py} script (\autoref{apx:fixing}) which will strip away all empty lines. Applying \texttt{fixing.py} on the data files significantly increases the BLEU-score for the Baseline model, while the old Baseline (pre-BPE, pre-fixing) had a BLEU score (See the section on BLEU-score for more details) of 1.27 the new Baseline (pre-BPE, post-fixing) had a BLEU score of 2.15, it was therefore decided to use the \texttt{fixing.py} on all data files.
+An unwanted side-effect of the \texttt{train\_test\_dev.py} script is that it adds white spaces between the individual sentences in both the (train, test, dev) source files as the target files. This results in the Machine Translation system "assigning" sentences to these white spaces when training, resulting in a normal German sentence within a normal German sentence. For this reason all files are passed through the \texttt{fixing.py} script (\autoref{apx:fixing}) which will strip away all empty lines. Applying \texttt{fixing.py} on the data files significantly increases the BLEU-score for the Baseline model, while the old Baseline (pre-BPE, pre-fixing) had a BLEU score (See the section on BLEU-score for more details) of 1.36 the new Baseline (pre-BPE, post-fixing) had a BLEU score of 2.15, it was therefore decided to use the \texttt{fixing.py} on all data files.
 
 
 \subsubsection{BPE}
@@ -233,21 +233,20 @@ Before being passed to the pre-processing and training, the data, except for the
 
 \subsection{OpenNMT}
  
-To train the data a library is needed that both support Neural Machine Translation and support source word features. 
- 
-preprocessing
+To train the data a library is needed that both support Neural Machine Translation and support source word features. With these criteria in mind $2$ libraries were eventually found: OpenNMT \cite{klein-etal-2017-opennmt} and MarianNMT \cite{mariannmt}. A main difference between the two remaining libraries is the way source word features can be used. Consider the following sentence: "PRIVAT1A*|340 FAMILIE1", as can be seen the first word has a word features attached, however, the second word does not. While this is not a problem in MarianNMT this would be a cause a problem in OpenNMT since it source word features need to be consistent. Nonetheless, OpenNMT was chosen as the preferred library because of its compatibility with Microsoft Windows $10$.
+
+\subsection{Hyperparameters and Architecture}
+
+Using the OpenNMT library \cite{klein-etal-2017-opennmt} a model was trained on the Transformer architecture. The hyperparameters were picked to match the recommended standard transformer hyper-parameters \cite{standard_hyperparameters} as shown in (\autoref{tab:parameter}). These settings were chosen as to create a model that is able to imitate the WMT2014 German-English \cite{WMT2014} results as achieved by the original paper on Transformers \cite{vaswani2017attention}. Overfitting on a small data set (the training data consists of $60000$ sentences) is a major challenge \cite{barone2017regularization}, therefore,  an early stopping criteria was introduced. If the perplexity and accuracy of the model do not improve during the last 5 validation performances the system will be stopped. Due to the limited capabilities of the system used, even with the use of the BPE algorithm, the batch size had to be decreased from a recommended 4096 to 1024.
 
 
-\subsection{Parameters and Architecture}
-
-Using the OpenNMT library \cite{klein-etal-2017-opennmt}
 
 \begin{table}[h]
-\caption{Showing the parameters used for training using the Transformer architecture.The batch size is small since the GPU used for training had only 4GB of VRAM (NVIDIA GTX 980).}
+\caption{Showing the hyperparameters used for training using the Transformer architecture. It is important to note that the  }
 \centering
 \begin{tabular}{|ll|ll|}
 \hline
-\multicolumn{1}{|l|}{Parameter} & Setting     & \multicolumn{1}{l|}{Parameter} & Setting              \\ \hline
+\multicolumn{1}{|l|}{Hyperparameter} & Setting     & \multicolumn{1}{l|}{Hyperparameter} & Setting              \\ \hline
 Encoder type                    & Transformer & Batch size                     & 1024                 \\
 Decoder type                    & Transformer & Batch type                     & tokens               \\
 Transformer feed-forward        & 2048        & Normalization                  & tokens               \\
@@ -259,7 +258,7 @@ Position encoding               & True        & World size                     &
 Maximum generator batches       & 2           & GPU rank                       & 0                    \\
 Dropout probability             & 0.1         & Early stopping                 & 5                    \\
 Optimization method             & adam        & Early Stopping criteria        & perplexity, accuracy \\
-Adam beta2 parameter            & 0.998       & Max gradient norm              & 0                    \\
+Adam beta2 hyperparameter            & 0.998       & Max gradient norm              & 0                    \\
 Decay Method                    & noam        & Parameters initialized at      & 0                    \\
 Learning rate                   & 2           & Parameters\_init\_glorot       & True                 \\ \hline
 \end{tabular}
@@ -277,7 +276,7 @@ BLEU makes use of the weighted precision score (\autoref{fig:weighted_precision}
 \begin{figure}[h]
 \caption{Showing the modified n-gram precision formula. The difference between the modified version and the normal version is that the modified version takes into account the maximum reference count, known as the clipped count. Candidates refers to the translated sentences \cite{chan} \cite{papineni2002bleu}. First compute the N-gram matches. Second add the clipped counts for all translated sentences. Third divide the sum by the total number of n-grams in the reference. \cite{chan}}
  \centering 
- \includegraphics[width=13cm]{Bachelor CSAI thesis template/images/weighted_precision.png}
+ \includegraphics[width=10cm]{Bachelor CSAI thesis template/images/weighted_precision.png}
  \label{fig:weighted_precision}
 \end{figure}
 
@@ -288,7 +287,7 @@ Although not applicable in this paper, traditionally the BLEU-score was used to 
 \begin{figure}[h]
  \caption{Showing the complete formula for calculating BLEU \cite{papineni2002bleu}. In the BP formula, c denotes the total length of the translation corpus, r is the sum of the best match lengths of the translation sentence in the test corpus \cite{papineni2002bleu}. If the BP value is 1 this means that the translation length and the reference length are equal if this is not the case the second formula will be used. The eventual BLEU-score is the average of the weighted precision scores times the brevity penalty, and therefore penalizes shorter sentences. }
  \centering 
- \includegraphics[width=12cm]{Bachelor CSAI thesis template/images/bleu_formula.PNG}
+ \includegraphics[width=8cm]{Bachelor CSAI thesis template/images/bleu_formula.PNG}
  \label{fig:full_bleu}
 \end{figure}
 
@@ -309,13 +308,21 @@ Translation Edit Rate (TER) measures the amount of editing that needs to be done
 \begin{figure}[h]
  \caption{Showing the formula for calculating the TER score \cite{TERsnover2006}. The TER-score is calculated by dividing the number of edits by the average number of words in the reference translation. Possible edits are: insertion, deletion, substitution, and switching words around. All these edits have an equal cost.}
  \centering 
- \includegraphics[width=12cm]{Bachelor CSAI thesis template/images/ter_formula.PNG}
+ \includegraphics[width=7cm]{Bachelor CSAI thesis template/images/ter_formula.PNG}
  \label{fig:full_ter}
 \end{figure}
 
 
 
 \section{Results}
+
+\subsection{Baseline}
+
+\subsection{Temporal}
+
+\subsection{Vocal}
+
+\subsection{Combined}
 
 \begin{table}
     \caption{Best performing models with the accompanying BLEU- and TER-scores. Highlighted in bold are the best results. As can be seen in the table the baseline outperforms all other models.}
@@ -336,19 +343,19 @@ Translation Edit Rate (TER) measures the amount of editing that needs to be done
 \end{table}
 
 \pgfplotstableread[row sep=\\,col sep=&]{
-    Model & carT & carD \\
-    Baseline     & 3.69  & 0.960  \\
-    Temporal     & 2.85 & 0.971  \\
-    Vocal   & 2.03 & 1 \\
-    Combined   & 1.69 & 0.973 \\
+    Model &      carT         \\
+    Baseline     & 3.69  \\
+    Temporal     & 2.85  \\
+    Vocal   & 2.03       \\
+    Combined   & 1.69    \\
     }\mydata
 
 \begin{figure}[h]
-\caption{Showing the results from the $4$ performed experiments. On the X-axis the different models are presented. On the Y-axis the score is shown (for the meaning of the TER and BLEU score: see their respective sections.)}
+\caption{Showing the results from the $4$ performed experiments. On the X-axis the different models are presented. On the Y-axis the score is shown, the calculation and description of the BLEU score is described in Section 4.5)}
 \begin{tikzpicture}
     \begin{axis}[
             ybar,
-            title={Experimentation Results (Score vs. Model)},
+            title={Experimentation Results (BLEU-Score vs. Model)},
             bar width=.6cm,
             width=.8\textwidth,
             height=.5\textwidth,
@@ -363,14 +370,51 @@ Translation Edit Rate (TER) measures the amount of editing that needs to be done
             ylabel={\/Score},
         ]
         \addplot table[x=Model,y=carT]{\mydata};
-        \addplot table[x=Model,y=carD]{\mydata};
-        \legend{BLEU-score, TER-score}
+        \legend{BLEU-score}
     \end{axis}
     
 \end{tikzpicture}
 
 \label{fig:results_graph}
 \end{figure}
+
+
+\pgfplotstableread[row sep=\\,col sep=&]{
+    Model &      carD         \\
+    Baseline     & 0.960  \\
+    Temporal     & 0.971  \\
+    Vocal   & 1.000       \\
+    Combined   & 0.973    \\
+    }\mydata
+
+\begin{figure}[h]
+\caption{Showing the results from the $4$ performed experiments. On the X-axis the different models are presented. On the Y-axis the score is shown, the calculation and description of the Translation Error Rate is described in Section 4.6}
+\begin{tikzpicture}
+    \begin{axis}[
+            ybar,
+            title={Experimentation Results (TER-score vs. Model)},
+            bar width=.6cm,
+            width=.8\textwidth,
+            height=.5\textwidth,
+            legend style={at={(0.5,1)},
+                anchor=north,legend columns=-1},
+            symbolic x coords={Baseline, Temporal, Vocal, Combined},
+            xtick=data,
+            nodes near coords,
+            nodes near coords align={vertical},
+            ymin=0.9,ymax=1.05,
+            xlabel={\/Models},
+            ylabel={\/Score},
+        ]
+        \addplot table[x=Model,y=carD]{\mydata};
+        \legend{TER}
+    \end{axis}
+    
+\end{tikzpicture}
+
+\label{fig:results_ter}
+\end{figure}
+
 
 \section{Discussion}
 
@@ -382,12 +426,29 @@ schrijf een stuk over wat er gebeurt als je dat hele ding standardised
 
 alternative bpe
 
+eerst mariannmt dna opennmt
+
 
 
 \section{Conclusion}
 
 \section{Self-Reflection}
 
+%In the first semester of the third year I decided to pick a minor course called: Software Engineering for CSAI. The main part of this course was a large project on machine translation, integration into webservers, and general software engineering practices. Out of pure coincidence it turned out that I had the best GPU. This didn't matter in the end since I switched to Google Colab. Therefore, I was assigned to work mainly on the machine translation part and came to be quite interested in it. When it was time to pick a thesis coordinator, I took the opportunity to continue this interest into my Thesis.
+
+\subsection{Planning}
+
+%The project was on my part poorly planned from the start, I didn't actually start thinking about what my thesis objective would be until a good $2$ weeks into the semester. In comparison, my other colleagues had thought about it in a structured way at that point. In hindsight I should have started to think about a objective way sooner, this would save me from problems further down the road. Mainly those to do with datasets. 
+
+\subsection{Datasets}
+
+%Due to my initial poor planning I started rather late with the project, literature review and dataset searching. While I thought that I had found a dataset (NGT Nijmegen Dataset, NGT -> Dutch) and wrote my bachelor thesis proposal with that dataset in mind. I would not find out until early April that this dataset was in fact not (fully) available to the public. Therefore, I had to look for a new dataset. This could have all been avoided if I was more persistent when it came to obtaining the original Dutch dataset, I should have send an e-mail instead of just giving up. Secondly, if I had started looking for a dataset sooner, this could all have been avoided. From these mistakes I learned that I should be more steadfast when it comes to problems I encounter.
+
+\subsection{Flexibility}
+
+%A major setback in during the Thesis is the end of Google Colab's $12$ hour runtime. Originally I used the MarianNMT library in Google Colab to train my models like I trained my models during the course Software Engineering. However, in March of 2021 Google added a CAPTCHA function to Google Colab to check if you were still active, aside from that if you were found to not be active in that time you were banned from using their GPU's for a unknown time. Therefore, I had to switch to a local system with OpenNMT in the beginning of May, effectively starting over again. I should have looked for alternatives earlier since I was aware of this problem mid-April.
+
+\subsection{Paper}
 
 \input{bib-apx.tex}
 
