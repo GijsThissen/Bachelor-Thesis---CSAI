@@ -15,13 +15,12 @@ Lastly, even though they are unaware of me writing this Thesis paper, I would li
 
 \begin{abstract}
 
-Sign languages are languages  that have their own unique grammar, words and manners of speaking and can be therefore completely distinct from the regional equivalent language. Most of the time the they live in a parallel worlds, with the deaf on one side and the hearing on another. When these worlds clash confusion arises because of the dissimilarity between the two, since they might not stem from the same language family. In recent years the field of neural machine translation has grown exponentially, with the invention of the transformer architecture increasing accuracy in parallel machine translation software. German Sign Language (DGS) and German are two distinct languages and are therefore subject to translation possibilities. The recent approaches mainly focuses on (German) text to (DGS) glosses. However,  there has been a lack of a glosses-to-text translation systems. The focus of this paper is find the best approach by adding temporal, vocal, or combined vocal and temporal data to the glosses of the DGS Public Korpus. The results show that adding these extra tokens to the data results in a less accurate translation over all models. The neural machine translation system with an input of nothing but glosses [BLEU 3.69, TER 0.960] outperforms the more complex models [average BLEU 2.19, average TER 0.981]. 
+Sign languages are languages that have their own unique grammar, words and manners of speaking and can be therefore completely distinct from the regional equivalent language. Most of the time they live in parallel worlds, with the deaf on one side and the hearing on another. When these worlds clash confusion arises because of the dissimilarity between the two since they might not stem from the same language family. In recent years the field of neural machine translation has grown exponentially, with the invention of the transformer architecture increasing accuracy in parallel machine translation software. German Sign Language (DGS) and German are two distinct languages and are therefore subject to translation possibilities. The recent approaches mainly focus on (German) text to (DGS) glosses. However,  there has been a lack of a glosses-to-text translation system. The focus of this paper is to find the best approach by adding temporal, vocal, or combined data to the glosses of the DGS Public Korpus. The results show that adding these extra tokens to the data results in a less accurate translation across all models. The neural machine translation system with an input of nothing but glosses [BLEU 3.69, TER 0.960] outperforms the more complex models [average BLEU 2.19, average TER 0.981]. It is concluded that adding temporal, vocal or both aids in the emergence of more rare and unique words resulting in the decrease in accuracy of the model.
 
 \end{abstract}
 
 \section{Introduction}
 
-\subsection{Study of sign language}
 early linguistics vs early sign language study
 
 \cite{stokoe2005sign}
@@ -29,7 +28,13 @@ sign language us actually a language
 
 GLOSSES
 
-\subsection{Machine Translation}
+zowel basic lstm en transformer
+
+machine translation en transformers \cite{vaswani2017attention}
+
+papers die hier precies mee te maken hebben
+\cite{garcia2016factored}
+
 basic NMT and NLP
 
 \subsection{Research Question}
@@ -52,19 +57,18 @@ basic NMT and NLP
 
 \section{Related Work}
 
-\subsection{LSTM}
-zowel basic lstm en transformer
+Research on parallel translation of spoken language is widely attested. Sign language translation, however, is a relatively small field with little appropriate datasets or methods \cite{camgoz2021content4all} \cite{bragg2019sign}. In the late 1990s, the field of Sign Language translation wasn't much of a separate field, the research that did exist was mainly focused on recognizing sign language. The focus of Sign Language Recognition mainly relied on using HMMs (\citealp{hiddenmarkov1l}; \citealp{hiddenmarkov2}; \citealp{hiddenmarkov3}) \cite{holden2005australian} A gesture would be decomposed into a sequence of postures. These postures would then be recognised by the HMM as a gesture. For the system to be able to track a gesture the user would be wearing an annotated glove. For example, coloured rings would be worn around each finger. This approach changed in 1996 by using the colour of the participants' skin to segment from the background by calibrating the system on the participants noses \cite{starner1998real}. This proved to be problematic, however, since the hands move at a different pace compared to the nose the system would occasionally filter out the nose \cite{starner1998real}. In 2005, a end-to-end pipeline , called the Sign2 Conversion System \cite{glenn2005image}, was created. However, it was only being able to be used for ASL finger-spelling excluding any non-alphabetical ASL signs.
 
-\subsection{Transformers}
-machine translation en transformers \cite{vaswani2017attention}
+Using neural networks in sign recognition was among the first methods proposed at the onset of the field \cite{murakami1991gesture} \cite{fels1993glove}, however the approach was overshadowed due to the success of HMM's in the 1990s \cite{cooper2011sign}.  
 
-\subsection{Sign Language Translation}
+The use of neural networks became more prominent in the late 2000s \cite{parton2006sign}, (\citealp{ethopia}; \citealp{malaysia}; \citealp{persia}; \citealp{brazil}; \citealp{arabia})
 
-papers die hier precies mee te maken hebben
-\cite{garcia2016factored}
+More recently, the field can be divided into two main trends, the  Sign Language Translation (SLT) trend and the Continuous Sign Language Recognition (CSLR) trend. Continuous Sign Language Recognition systems \cite{koller2015continuous}
 
+vergelijk lstms vs. transfromer hier
+NOG AFMAKEN!!!!!!!!
 
-
+SOTA \cite{camgoz2018neural}
 
 \section{Data}
 
@@ -216,7 +220,7 @@ After merging the data, the dataframe contains $5$ columns. As has been describe
 
 To tokenize and split the data the \texttt{train\_test\_dev.py} (SOURCE NEEDED) script was used to both tokenize and split the data into a training, a validation, and a testing file. Since the data set only has $60000$ sentences it was decided to split the data into only 500 sentences for validation and testing each while the remaining $58000$ sentences were used for the training file.
 
-An unwanted side-effect of the \texttt{train\_test\_dev.py} script is that it adds white spaces between the individual sentences in both the (train, test, dev) source files as the target files. This results in the Machine Translation system "assigning" sentences to these white spaces when training, resulting in a normal German sentence within a normal German sentence. For this reason all files are passed through the \texttt{fixing.py} script (\autoref{apx:fixing}) which will strip away all empty lines. Applying \texttt{fixing.py} on the data files significantly increases the BLEU-score for the Baseline model, while the old Baseline (pre-BPE, pre-fixing) had a BLEU score (See the section on BLEU-score for more details) of 1.36 the new Baseline (pre-BPE, post-fixing) had a BLEU score of 2.15, it was therefore decided to use the \texttt{fixing.py} on all data files.
+An unwanted side-effect of the \texttt{train\_test\_dev.py} script is that it adds white spaces between the individual sentences in both the (train, test, dev) source files as the target files. This results in the Machine Translation system "assigning" sentences to these white spaces when training, resulting in a normal German sentence within a normal German sentence. For this reason all files are passed through the \texttt{remove\_whitespace.py} script (\autoref{apx:fixing}) which will strip away all empty lines. Applying \texttt{remove\_whitespace.py} on the data files significantly increases the BLEU-score for the Baseline model, while the old Baseline (pre-BPE, pre-fixing) had a BLEU score (See the section on BLEU-score for more details) of 1.36 the new Baseline (pre-BPE, post-fixing) had a BLEU score of 2.15, it was therefore decided to use the \texttt{fixing.py} on all data files.
 
 
 \subsubsection{BPE}
@@ -293,7 +297,7 @@ Although not applicable in this paper, traditionally the BLEU-score was used to 
 
 \subsubsection{BLEU-score}
 
-The BLEU score ranges from 0 to 1, with 0 being absolutely not related to the reference sentence and 1 being identical. For the purposes of this paper BLEU will be used on only $1$ reference since there is only one available per gloss sentence.
+The BLEU score ranges from 0 to 1, with 0 being absolutely not related to the reference sentence and 1 being identical. As a convention in the field of Neural Machine Translation, the BLEU-score is either multiplied by 10 or 100, for the purposes of this paper the BLEU-score will be multiplied by 100. For the purposes of this paper BLEU will be used on only $1$ reference since there is only one available per gloss sentence.
 
 \subsection{TER}
 
@@ -316,13 +320,18 @@ Translation Edit Rate (TER) measures the amount of editing that needs to be done
 
 \section{Results}
 
-\subsection{Baseline}
+At the beginning of this paper it was hypothesised that with the insertion of temporal data into the baseline data, there would be an improvement regarding the accuracy rate of model. Additionally it was hypothesised in a sub-hypothesis that the addition of a vocal token would increase the accuracy of the model (See Section 4.1.3 on the scientific background). For these reasons $4$ experiments were set up, the baseline, temporal (baseline + time), vocal (baseline + vocal), and combined (baseline + vocal + time). 
 
-\subsection{Temporal}
+say what the table and figures show
 
-\subsection{Vocal}
+talk about the improvement with the preprocessing of the baseline
+talk about the standardization experiment
 
-\subsection{Combined}
+talk about the ter score staying the same and possibly why
+
+talk what is going on in the graphs
+
+geef voorbeelden van de vertalingen
 
 \begin{table}
     \caption{Best performing models with the accompanying BLEU- and TER-scores. Highlighted in bold are the best results. As can be seen in the table the baseline outperforms all other models.}
@@ -350,7 +359,7 @@ Translation Edit Rate (TER) measures the amount of editing that needs to be done
     Combined   & 1.69    \\
     }\mydata
 
-\begin{figure}[h]
+\begin{figure}[h!]
 \caption{Showing the results from the $4$ performed experiments. On the X-axis the different models are presented. On the Y-axis the score is shown, the calculation and description of the BLEU score is described in Section 4.5)}
 \begin{tikzpicture}
     \begin{axis}[
@@ -387,7 +396,7 @@ Translation Edit Rate (TER) measures the amount of editing that needs to be done
     Combined   & 0.973    \\
     }\mydata
 
-\begin{figure}[h]
+\begin{figure}[h!]
 \caption{Showing the results from the $4$ performed experiments. On the X-axis the different models are presented. On the Y-axis the score is shown, the calculation and description of the Translation Error Rate is described in Section 4.6}
 \begin{tikzpicture}
     \begin{axis}[
@@ -417,6 +426,10 @@ Translation Edit Rate (TER) measures the amount of editing that needs to be done
 
 
 \section{Discussion}
+waarom zijn de resultaten er wat is de hypothesis iets meer analytical
+Challenges/problems
+
+What are your trial and errors
 
 answer research question, hypothese
 
@@ -436,19 +449,19 @@ eerst mariannmt dna opennmt
 
 %In the first semester of the third year I decided to pick a minor course called: Software Engineering for CSAI. The main part of this course was a large project on machine translation, integration into webservers, and general software engineering practices. Out of pure coincidence it turned out that I had the best GPU. This didn't matter in the end since I switched to Google Colab. Therefore, I was assigned to work mainly on the machine translation part and came to be quite interested in it. When it was time to pick a thesis coordinator, I took the opportunity to continue this interest into my Thesis.
 
-\subsection{Planning}
+%\subsection{Planning}
 
 %The project was on my part poorly planned from the start, I didn't actually start thinking about what my thesis objective would be until a good $2$ weeks into the semester. In comparison, my other colleagues had thought about it in a structured way at that point. In hindsight I should have started to think about a objective way sooner, this would save me from problems further down the road. Mainly those to do with datasets. 
 
-\subsection{Datasets}
+%\subsection{Datasets}
 
 %Due to my initial poor planning I started rather late with the project, literature review and dataset searching. While I thought that I had found a dataset (NGT Nijmegen Dataset, NGT -> Dutch) and wrote my bachelor thesis proposal with that dataset in mind. I would not find out until early April that this dataset was in fact not (fully) available to the public. Therefore, I had to look for a new dataset. This could have all been avoided if I was more persistent when it came to obtaining the original Dutch dataset, I should have send an e-mail instead of just giving up. Secondly, if I had started looking for a dataset sooner, this could all have been avoided. From these mistakes I learned that I should be more steadfast when it comes to problems I encounter.
 
-\subsection{Flexibility}
+%\subsection{Flexibility}
 
 %A major setback in during the Thesis is the end of Google Colab's $12$ hour runtime. Originally I used the MarianNMT library in Google Colab to train my models like I trained my models during the course Software Engineering. However, in March of 2021 Google added a CAPTCHA function to Google Colab to check if you were still active, aside from that if you were found to not be active in that time you were banned from using their GPU's for a unknown time. Therefore, I had to switch to a local system with OpenNMT in the beginning of May, effectively starting over again. I should have looked for alternatives earlier since I was aware of this problem mid-April.
 
-\subsection{Paper}
+%\subsection{Paper}
 
 \input{bib-apx.tex}
 
