@@ -21,21 +21,11 @@ Sign languages are languages that have their own unique grammar, words and manne
 
 \section{Introduction}
 
-early linguistics vs early sign language study
+Contrary to popular belief sign language and spoken language are not one in the same, in fact, sign language has its own words and grammar \cite{camgoz2018neural} that are completely separate from its regional counterpart. The hearing-impaired, users of sign language, use signs as their day to day communication. This is done by the use of spatial-temporal gestures to overlay pieces of information
 
 \cite{stokoe2005sign}
 sign language us actually a language
 
-GLOSSES
-
-zowel basic lstm en transformer
-
-machine translation en transformers \cite{vaswani2017attention}
-
-papers die hier precies mee te maken hebben
-\cite{garcia2016factored}
-
-basic NMT and NLP
 
 \subsection{Research Question}
 
@@ -230,7 +220,7 @@ After merging the data, the dataframe contains $5$ columns. As has been describe
 
 To tokenize and split the data the \texttt{train\_test\_dev.py} \cite{dimitarshterionovtrain} script was used to both tokenize and split the data into a training, a validation, and a testing file. Since the data set only has $60000$ sentences it was decided to split the data into only 500 sentences for validation and testing each while the remaining $58000$ sentences were used for the training file.
 
-An unwanted side-effect of the \texttt{train\_test\_dev.py} \cite{dimitarshterionovtrain} script is that it adds white spaces between the individual sentences in both the (train, test, dev) source files as the target files. This results in the Machine Translation system "assigning" sentences to these white spaces when training, resulting in a normal German sentence within a normal German sentence. For this reason all files are passed through the \texttt{remove\_whitespace.py} script (\autoref{apx:fixing}) which will strip away all empty lines. Applying \texttt{remove\_whitespace.py} on the data files significantly increases the BLEU-score for the Baseline model, while the old Baseline (pre-BPE, pre-fixing) had a BLEU score (See the section on BLEU-score for more details) of 1.36 the new Baseline (pre-BPE, post-fixing) had a BLEU score of 2.15, it was therefore decided to use the \texttt{remove\_whitespace.py} on all data files.
+An unwanted side-effect of the \texttt{train\_test\_dev.py} \cite{dimitarshterionovtrain} script is that it adds white spaces between the individual sentences in both the (train, test, dev) source files as the target files. This results in the Machine Translation system "assigning" sentences to these white spaces when training, resulting in a normal German sentence within a normal German sentence. For this reason all files are passed through the \texttt{remove\_whitespace.py} script (\autoref{apx:fixing}) which will strip away all empty lines. Applying \texttt{remove\_whitespace.py} on the data files significantly increases the BLEU-score for the Baseline model, while the old Baseline (pre-BPE, pre-removal) had a BLEU score (See the section on BLEU-score for more details) of 1.36 the new Baseline (pre-BPE, post-removal) had a BLEU score of 2.15, it was therefore decided to use the \texttt{remove\_whitespace.py} on all data files.
 
 
 \subsubsection{BPE}
@@ -242,7 +232,7 @@ Byte Pair Encoding (BPE) is a general-purpose data compression algorithm \cite{s
     \item \textbf{Out-of-vocabulary words (OOV)}. Taking into account the previous example, since the unit "auf" has been replaced by $1$ symbol encountering it will be familiar. This is because BPE allows for the encoding of rare words and will not introduce any unrecognised tokens. \cite{gage1994new} \cite{sennrich2015neural}
 \end{enumerate}
 
-Before being passed to the pre-processing and training, the data, except for the test.trg-file, was passed through a modified form of the BPE-algorithm. In normal circumstances when using BPE it causes no problems, however, when applying BPE to data containing word features it will split the word on the "|" character. The modified algorithm first double checks whether or not there is a temporal feature added to the word and if there is will join the word and its respective temporal feature together (\autoref{apx:bpemod}). Applying \texttt{remove\_whitespace.py} on the data files significantly increases the BLEU-score for the Baseline model, while the old Baseline (pre-BPE, post-fixing) had a BLEU score 2.15, the new Baseline (post-BPE, post-fixing) had a BLEU-score of 3.69. It was therefore decided to use the Byte Pair Encoding algorithm to compress the data files.
+Before being passed to the pre-processing and training, the data, except for the test.trg-file, was passed through a modified form of the BPE-algorithm. In normal circumstances when using BPE it caused no problems, however, when applying BPE to data containing temporal word features it would split the word on the "|" character. The modified algorithm first double checks whether or not there is a temporal feature added to the word and if there is will join the word and its respective temporal feature together (\autoref{apx:bpemod}). Applying \texttt{remove\_whitespace.py} on the data files significantly increases the BLEU-score for the Baseline model, while the old Baseline (pre-BPE, post-removal) had a BLEU score 2.15, the new Baseline (post-BPE, post-removal) had a BLEU-score of 3.69. It was therefore decided to use the Byte Pair Encoding algorithm to compress the data files. 
 
 
 \subsection{OpenNMT}
@@ -437,7 +427,10 @@ geef voorbeelden van de vertalingen
 
 \section{Discussion}
 waarom zijn de resultaten er wat is de hypothesis iets meer analytical
+
 Challenges/problems
+1. the failure of google colab
+2. the failure of mariannmt
 
 What are your trial and errors
 
@@ -449,7 +442,6 @@ schrijf een stuk over wat er gebeurt als je dat hele ding standardised
 
 alternative bpe
 
-eerst mariannmt dna opennmt
 
 
 
@@ -457,21 +449,17 @@ eerst mariannmt dna opennmt
 
 \section{Self-Reflection}
 
-%In the first semester of the third year I decided to pick a minor course called: Software Engineering for CSAI. The main part of this course was a large project on machine translation, integration into webservers, and general software engineering practices. Out of pure coincidence it turned out that I had the best GPU. This did not matter in the end since I switched to Google Colab. Therefore, I was assigned to work mainly on the machine translation part and came to be quite interested in it. When it was time to pick a thesis coordinator, I took the opportunity to continue this interest into my Thesis.
+At first when I started this thesis, I didn't quite know what I was getting myself into, the careful planning it would involve, the research, the literature review it was all kind of new to me. While I experienced many of these concepts in the earlier parts of my bachelor combining them proved to be a difficult task. What proved especially difficult was the planning, since I am used to being able to do an assignment or learn for an exam within the span of a week, however, I learned that regarding a research project this is not the case. Especially since my topic is Deep Learning related it took careful planning and prediction on how long each particular experiment would take and whether it would fit within the time span I had. There were some foreseeable setbacks, mainly the introduction of CAPTCHA in Google Colab, that caused the experiments to take longer than expected that took me by surprise. Especially since I had to start from scratch again. What I learned from this was that my planning (dis)ability is the biggest bottleneck in my research. If I had planned out the experiments in a better way with doing a prototype beforehand these problems could have been avoided. There should have been better literature review on my part, mainly regarding the available architectures, instead of struggling with the dataset using the Phoenix dataset as described in \cite{camgoz2018neural} would have made for a better thesis. What I learned from this experience is that when it comes to research planning, prototyping and exploring is an essential, but for me at first surprising, part of the project.
 
-%\subsection{Planning}
+• Create programming code either for the purposes of new software or for data analysis and/or representation, in line with best practices and coding standards;
 
-%The project was on my part poorly planned from the start, I did not actually start thinking about what my thesis objective would be until a good $2$ weeks into the semester. In comparison, my other colleagues had thought about it in a structured way at that point. In hindsight I should have started to think about a objective way sooner, this would save me from problems further down the road. Mainly those to do with datasets. 
+• Report orally on the scientific and social-cultural merit of their project;
 
-%\subsection{Datasets}
+• Write an academic report on the research;
 
-%Due to my initial poor planning I started rather late with the project, literature review and dataset searching. While I thought that I had found a dataset (NGT Nijmegen Dataset, NGT -> Dutch) and wrote my bachelor thesis proposal with that dataset in mind. I would not find out until early April that this dataset was in fact not (fully) available to the public. Therefore, I had to look for a new dataset. This could have all been avoided if I was more persistent when it came to obtaining the original Dutch dataset, I should have send an e-mail instead of just giving up. Secondly, if I had started looking for a dataset sooner, this could all have been avoided. From these mistakes I learned that I should be more steadfast when it comes to problems I encounter.
+• Create a short video demonstration of the outcome of the project
 
-%\subsection{Flexibility}
 
-%A major setback in during the Thesis is the end of Google Colab's $12$ hour runtime. Originally I used the MarianNMT library in Google Colab to train my models like I trained my models during the course Software Engineering. However, in March of 2021 Google added a CAPTCHA function to Google Colab to check if you were still active, aside from that if you were found to not be active in that time you were banned from using their GPU's for a unknown time. Therefore, I had to switch to a local system with OpenNMT in the beginning of May, effectively starting over again. I should have looked for alternatives earlier since I was aware of this problem mid-April.
-
-%\subsection{Paper}
 
 \input{bib-apx.tex}
 
