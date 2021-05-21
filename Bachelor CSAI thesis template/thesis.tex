@@ -7,9 +7,12 @@ Foremost, I would like to express my gratitude towards all persons that helped m
 
 I would like to especially thank my research supervisor \textbf{Dr. Dimitar Shterionov} (Professor at Tilburg University) for the guidance given by helping me both with the research for this topic and correcting my many mistakes while coding. 
 
-I am grateful to my fellow Thesis colleagues \textbf{Stan van der Vossen} (CSAI-Student) and \textbf{Jakob E. Hauser} (CSAI-Student) for the advice, translating sporadic German to English, and guidance given towards solving the problems I faced during the creation of this Thesis paper.
+I am grateful to my fellow Thesis colleagues \textbf{Stan van der Vossen} (CSAI-Student), \textbf{Jakob E. Hauser} (CSAI-Student), \textbf{Stefano Scola} (CSAI-Student), and \textbf{Codrin Mironiuc} (CSAI-Student) for the advice, translating sporadic German to English, and guidance given towards solving the problems I faced during the creation of this Thesis paper.
 
-Lastly, even though they are unaware of me writing this Thesis paper, I would like to express my gratitude towards all the researchers that aided in the creation of the DGS-Korpus and especially for making it available to the online public.
+Lastly, even though they are unaware of me writing this Thesis paper, I would like to express my gratitude towards all the researchers that aided in the creation of the DGS-Korpus and especially for making it available to the online public. \\ \\
+\hfill
+Gijs Thissen \\
+Tilburg, May 2021
 
 \input{title.tex} % Yes, again
 
@@ -21,7 +24,7 @@ Sign languages are languages that have their own unique grammar, words and manne
 
 \section{Introduction}
 
-Contrary to popular belief sign language and spoken language are not one in the same. In fact, sign language has its own words and grammar (\citealp{camgoz2018neural}; \citealp{stokoe2005sign}) that are completely separate from its regional counterpart. The earliest attested use of sign language can be found in Plato's Cratylus (\cite{sedley2003plato} as cited in \cite{ruben2005sign}).  The hearing-impaired, users of sign language, use signs as their day to day communication \cite{perniss2007}. This is done by the use of spatial-temporal gestures to communicate pieces of information.  However, communication between the hearing-impaired and the hearing can prove to be difficult \cite{meadow1981interactions} when both of them do not know the others language. To solve this problem, end-to-end machine translation models have been developed for recognize gestures and translate them directly to text \cite{de2020sign}. Sign recognition systems work by isolating different signs from each other, something that has proven to be difficult due to the existence of a transitional period between signs \cite{konradoffentliches} (See Section 3.4 about Segmentation for more details). Both the transitional period as the sign take time to perform.
+Contrary to popular belief sign language and spoken language are not one in the same. In fact, sign language has its own words and grammar (\citealp{camgoz2018neural}; \citealp{stokoe2005sign}) that are completely separate from its regional counterpart. The earliest attested use of sign language can be found in Plato's Cratylus \cite{sedley2003plato} as cited in \citet{ruben2005sign}.  The hearing-impaired, users of sign language, use signs as their day to day communication \cite{perniss2007}. This is done by the use of spatial-temporal gestures to communicate pieces of information.  However, communication between the hearing-impaired and the hearing can prove to be difficult \cite{meadow1981interactions} when both of them do not know the others language. To solve this problem, end-to-end machine translation models have been developed for recognize gestures and translate them directly to text \cite{de2020sign}. Sign recognition systems work by isolating different signs from each other, something that has proven to be difficult due to the existence of a transitional period between signs \cite{konradoffentliches} (See Section 3.4 about Segmentation for more details). Both the transitional period as the sign take time to perform.
 sign take time
 temporal data
 talk about how humans talk
@@ -54,20 +57,20 @@ vocal and mouthing in deaf people
 
 \section{Related Work}
 
-Research on parallel translation of spoken language is widely attested. Sign language translation, however, is a relatively small field with little appropriate datasets or methods \cite{camgoz2021content4all} \cite{bragg2019sign}.
+Research on parallel translation of spoken language is widely attested. Sign language translation, however, is a relatively small field with little appropriate datasets or methods (\citealp{camgoz2021content4all}; \citealp{bragg2019sign}).
 
 \subsection{Hidden Markov Models}
-In the late 1990s, the field of Sign Language translation wasn't much of a separate field, the research that did exist was mainly focused on recognizing sign language. The focus of Sign Language Recognition mainly relied on using HMMs (\citealp{hiddenmarkov1l}; \citealp{hiddenmarkov2}; \citealp{hiddenmarkov3}) \cite{holden2005australian} A gesture would be decomposed into a sequence of postures. These postures would then be recognised by the HMM as a gesture. For the system to be able to track a gesture the user would be wearing an annotated glove. For example, coloured rings would be worn around each finger. This approach changed in 1996 by using the colour of the participants' skin to segment from the background by calibrating the system on the participants noses \cite{starner1998real}. This proved to be problematic, however, since the hands move at a different pace compared to the nose the system would occasionally filter out the nose \cite{starner1998real}. In 2005, an end-to-end pipeline, called the Sign2 Conversion System \cite{glenn2005image}, was created. However, it was only being able to be used for ASL finger-spelling excluding any non-alphabetical ASL signs and therefore limiting the system greatly by excluding essential linguistical aspects of the American Sign Language.
+In the late 1990s, the field of Sign Language translation wasn't much of a separate field, the research that did exist was mainly focused on recognizing sign language. The focus of Sign Language Recognition mainly relied on using HMMs (\citealp{hiddenmarkov1l}; \citealp{hiddenmarkov2}; \citealp{hiddenmarkov3}; \citealp{holden2005australian}). A gesture would be decomposed into a sequence of postures. These postures would then be recognised by the HMM as a gesture. For the system to be able to track a gesture the user would be wearing an annotated glove. For example, coloured rings would be worn around each finger. This approach changed in 1996 by using the colour of the participants' skin to segment from the background by calibrating the system on the participants noses \cite{starner1998real}. This proved to be problematic, however, since the hands move at a different pace compared to the nose the system would occasionally filter out the nose \cite{starner1998real}. In 2005, an end-to-end pipeline, called the Sign2 Conversion System \cite{glenn2005image}, was created. However, it was only being able to be used for ASL finger-spelling excluding any non-alphabetical ASL signs and therefore limiting the system greatly by excluding essential linguistical aspects of the American Sign Language.
 
 \subsection{Deep Learning}
 
-Using neural networks in sign recognition was among the first methods proposed at the onset of the field \cite{murakami1991gesture} \cite{fels1993glove}, however the approach was overshadowed due to the success of HMM's in the 1990s \cite{cooper2011sign}. The use of neural networks became more prominent in the late 2000s \cite{parton2006sign}. During this time several new international projects were set up to create sign language recognition systems for local sign languages (\citealp{ethopia}; \citealp{malaysia}; \citealp{persia}; \citealp{brazil}; \citealp{arabia}). 
+Using neural networks in sign recognition was among the first methods proposed at the onset of the field (\citealp{murakami1991gesture}; \citealp{fels1993glove}), however the approach was overshadowed due to the success of HMM's in the 1990s \cite{cooper2011sign}. The use of neural networks became more prominent in the late 2000s \cite{parton2006sign}. During this time several new international projects were set up to create sign language recognition systems for local sign languages (\citealp{ethopia}; \citealp{malaysia}; \citealp{persia}; \citealp{brazil}; \citealp{arabia}). 
 
 Within recent times Deep Learning \cite{lecun2015deep} has gained popularity giving rise to new models. This enables the use of 3 dimensional convolutional neural networks. While previous recognition systems employed sign language recognition on 2 dimensional images, due to having no temporal dimension in their kernel this would result in a 2 dimensional output \cite{tran2015learning}. The main difference between the old systems and the new is the 3 dimensional convolutional neural network (CNN) that is able to extract discriminative spatial-temporal features \cite{huang2015sign}.
 
 \subsection{Continuous Sign Language Recognition}
 
-In mid 2010s the field has morphed into continuous sign language recognition (CSLR) (\citealp{koller2015continuous}; \citealp{continuoussignlanguage}). Where the older SLR systems were limited to the use of isolated gestures \cite{cooper2011sign}, through the use of (Long Short Term Memory) LSTM models \cite{hochreiter1997long} the field was able to create a CSLR system that recognizes gestures as a sequence of interconnected sub-units \cite{mittal2019modified}. This proved to be especially difficult since there are no clear boundaries between signs hands move from because signs do not simply stop but rather move in transitional movements (See Section 3.4 for details about Segmentation). An architecture that improves on this even more is the Transformer architecture \cite{vaswani2017attention} improving the WMT 2014 English-to-German translation task by 2 BLEU score (see Section 4.5 for details about BLEU) compared to older architectures. Consequently this architecture was applied to the field of SLR where Transformers have been proven to outperform LSTMs in SLR experiments \cite{de2020sign} \cite{camgoz2020sign}.
+In mid 2010s the field has morphed into continuous sign language recognition (CSLR) (\citealp{koller2015continuous}; \citealp{continuoussignlanguage}). Where the older SLR systems were limited to the use of isolated gestures \cite{cooper2011sign}, through the use of (Long Short Term Memory) LSTM models \cite{hochreiter1997long} the field was able to create a CSLR system that recognizes gestures as a sequence of interconnected sub-units \cite{mittal2019modified}. This proved to be especially difficult since there are no clear boundaries between signs hands move from because signs do not simply stop but rather move in transitional movements (See Section 3.4 for details about Segmentation). An architecture that improves on this even more is the Transformer architecture \cite{vaswani2017attention} improving the WMT 2014 English-to-German translation task by 2 BLEU score (see Section 4.5 for details about BLEU) compared to older architectures. Consequently this architecture was applied to the field of SLR where Transformers have been proven to outperform LSTMs in SLR experiments (\citealp{de2020sign}; \citealp{camgoz2020sign}).
 
 \subsection{Sign Language Translation}
 
@@ -85,9 +88,9 @@ The data consists of $405$ EAF-files (ELAN Annotation Files) gathered by the Ins
 
 \begin{itemize}
   \item Areas with a relatively high deaf population density (deaf schools, deaf centres, and deaf institutes). \cite{age_data_hamburg} \cite{deaf_areas}
-  \item The catchment areas of the former Schools for the Deaf.\cite{age_data_hamburg} \cite{prillwitz2008dgs}
-  \item Areas which were easy to reach from surrounding rural communities. \cite{age_data_hamburg} \cite{deaf_areas}
-  \item Areas that were suspected of having a distinct dialect. \cite{age_data_hamburg} \cite{prillwitz2008dgs}
+  \item The catchment areas of the former Schools for the Deaf. (\citealp{age_data_hamburg}; \citealp{prillwitz2008dgs})
+  \item Areas which were easy to reach from surrounding rural communities. (\citealp{age_data_hamburg}; \citealp{deaf_areas})
+  \item Areas that were suspected of having a distinct dialect. (\citealp{age_data_hamburg}; \citealp{prillwitz2008dgs})
 \end{itemize}
 
  The data was collected by representatives of the local deaf community to take into account the regional varieties of DGS \cite{deaf_areas}. As can be seen in \autoref{fig:bundeslander} the data was sampled from participants across different age groups \cite{age_data_hamburg}. 
@@ -103,7 +106,7 @@ The data consists of $405$ EAF-files (ELAN Annotation Files) gathered by the Ins
     }\mydata
 
 \begin{figure}[h]
-\caption{Showing the percentage of participants per age , divided into both the Male (shown in Purple) and Female (shown in Red) gender,  that participated in the creation of the DGS corpus (both annotated and non-annotated). \cite{age_data_hamburg}}
+\caption{Showing the percentage of participants per age , divided into both the Male (shown in Purple) and Female (shown in Red) gender,  that participated in the creation of the DGS corpus (both annotated and non-annotated).  \cite{age_data_hamburg}}
 \begin{tikzpicture}
     \begin{axis}[
             ybar,
@@ -145,7 +148,7 @@ The conversation conducted between the representatives of the deaf community has
 
 \subsection{Initial Translation}
 
-The annotations divided into tiers are presented across a timeline. As can be seen in \autoref{fig:elan_example}these files are divided into $11$ different tiers, presented in both English and German due to accessibility \cite{konradoffentliches}. Take "Lexem\_Gebärde\_r\_A" for example, this tier is translated into English as "Lexeme\_Sign\_r\_A". The tiers present in the EAF-files, translated into English, are: "Time", "Sign\_l\_B", "Sign\_r\_B", "Lexeme\_Sign\_l\_B", "Lexeme\_Sign\_r\_B", 
+The annotations divided into tiers are presented across a timeline. As can be seen in (\autoref{fig:elan_example}) these files are divided into $11$ different tiers, presented in both English and German due to accessibility \cite{konradoffentliches}. Take "Lexem\_Gebärde\_r\_A" for example, this tier is translated into English as "Lexeme\_Sign\_r\_A". The tiers present in the EAF-files, translated into English, are: "Time", "Sign\_l\_B", "Sign\_r\_B", "Lexeme\_Sign\_l\_B", "Lexeme\_Sign\_r\_B", 
 "Translation\_into\_English\_B", "Sign\_l\_A", "Sign\_r\_A", "Lexeme\_Sign\_l\_A", "Lexeme\_Sign\_r\_A", and "Translation\_into\_English\_A" \cite{sloetjes2017elan}. The goal of this paper is to, through experimentation, show to what extent temporal data aids in the performance of a machine translation system for sign language glosses to text. For this purpose, both the German Sign Language and the German Language were chosen respectively. Since the target language is German it was decided to use the original glosses and translations that were available in the corpus.
 
 The initial translation of the glosses in the data set (i.e.: Sign\_l\_A to Translation\_into\_English) was conducted by contracted sign language translators and interpreters \cite{konradoffentliches}. These researchers translated the data set word-for-word. Consequently, university students created coherent meaningful sentence like structures. Lastly, these sentences were fed back into the system until the proper meaning was determined by the DGS experts (\autoref{fig:uselesspipeline}) \cite{konradoffentliches}.
@@ -160,14 +163,14 @@ The initial translation of the glosses in the data set (i.e.: Sign\_l\_A to Tran
 
 \subsection{Segmentation}
 
-As with spoken languages, sign languages tend not to have a naturally occurring white space character \cite{hankesegmentation} \cite{konradoffentliches}. Thus it is difficult to determine where a sign begins and where a sign ends. In this situation, the segmentator has two options: either add a gap or none at all. Unlike spoken languages, when a participant is signing two words, take TREE (rest your right forearm upon your left palm and twist) \cite{perniss2007space} and COW (make two horns using your thumb and little finger on top of your head), for example. There is a transitional period where the participant moves his or her arm from one sign to the next. When adding a gap between the signs, the segmentator determines that the transitional movements are not part of the token's form \cite{konradoffentliches}. Taking this into account researchers at the University of Hamburg have decided that for the creation of the DGS corpus gaps will be added. The direct result of this decision is located in the EAF files, where there is temporal data with no associated annotations.
+As with spoken languages, sign languages tend not to have a naturally occurring white space character (\citealp{hankesegmentation}; \citealp{konradoffentliches}). Thus it is difficult to determine where a sign begins and where a sign ends. In this situation, the segmentator has two options: either add a gap or none at all. Unlike spoken languages, when a participant is signing two words, take TREE (rest your right forearm upon your left palm and twist) \cite{perniss2007space} and COW (make two horns using your thumb and little finger on top of your head), for example. There is a transitional period where the participant moves his or her arm from one sign to the next. When adding a gap between the signs, the segmentator determines that the transitional movements are not part of the token's form \cite{konradoffentliches}. Taking this into account researchers at the University of Hamburg have decided that for the creation of the DGS corpus gaps will be added. The direct result of this decision is located in the EAF files, where there is temporal data with no associated annotations.
 
 \subsection{Lemmatisation and Gloss conventions}
 
 When creating a corpus there is an intrinsic need to have conventions in place to make sure a uniform dataset is created. \cite{konradoffentliches} Therefore it is necessary to employ linguistics to standardise glosses using gloss conventions: \cite{kristoffersen2016designing}
 
 \begin{itemize}
-    \item In the field of Linguistics or more specifically in the field of lexicography, a lexical item forms the basic element of the lexicon of a language. Lexical signs are treated as items, that is as units of their respective sign language that would be found in the dictionary \cite{konradoffentliches}. When a deaf person signs SQUARE1\textasciicircum  it may mean different things such as a map, a recipe, or a page. In DGS \cite{perniss2007space} and several other European Sign Languages signs are iconically motivated \cite{pietrandrea2002iconicity} \cite{oomen2017iconicity}, meaning that there is a similarity between the form of the sign and the meaning of the sign. In the DGS corpus, type glosses are given an indication of iconic value by using a circumflex at the end: "SQUARE1\textasciicircum ". Examples of child types to the SQUARE1\textasciicircum parent type are: FORM1, MIRROR2, and PAPER4, these and all other non-circumflex glosses are subtypes. The numbers denote different lexical variants.
+    \item In the field of Linguistics or more specifically in the field of lexicography, a lexical item forms the basic element of the lexicon of a language. Lexical signs are treated as items, that is as units of their respective sign language that would be found in the dictionary \cite{konradoffentliches}. When a deaf person signs SQUARE1\textasciicircum  it may mean different things such as a map, a recipe, or a page. In DGS \cite{perniss2007space} and several other European Sign Languages signs are iconically motivated (\citealp{pietrandrea2002iconicity}; \citealp{oomen2017iconicity}), meaning that there is a similarity between the form of the sign and the meaning of the sign. In the DGS corpus, type glosses are given an indication of iconic value by using a circumflex at the end: "SQUARE1\textasciicircum ". Examples of child types to the SQUARE1\textasciicircum parent type are: FORM1, MIRROR2, and PAPER4, these and all other non-circumflex glosses are subtypes. The numbers denote different lexical variants.
     \item Fully iconically motivated signs, also known as poly-morphemic signs, are denoted as productive signs in contrast to lexical signs that denote something instead of meaning. Productive signs, therefore, have a \$PROD token \cite{konradoffentliches}
     \item Due to the anonymisation laws present in Germany, where this corpus was created, all names are replaced by "\$NAME". Except when it concerns a famous person the \$NAME gloss is followed by the person's name. \cite{konradoffentliches}
     \item Foreign language elements are represented using the INTS token, for example, when signing the English word Germany instead of "Deutschland" it has been written as GERMANY-INST1. (\citealp{kellett2008english}; \citealp{konradoffentliches})
@@ -219,7 +222,7 @@ Research has shown that talking speed is affected by emotions \cite{kshirsagar20
 \subsection{Pre-Processing}
 
 \subsubsection{EAF to CSV}
-Using the ELAN software $7$ of the $11$ tiers were selected and converted into a CSV file. This creates $2$ distinct CSV files that were consequently merged (\autoref{apx:first}). Due to having merged the files, there are no longer multiple persons in the data set, instead, the data set has transformed into a contextless database. Due to being able to access the timeline in ELAN \cite{elan_software}, it is possible to extract the temporal features of a given annotation. As mentioned before the annotators decided to add gaps between the signs \cite{hankesegmentation} \cite{konradoffentliches}, this has been carried over into the EAF-files, resulting in empty rows inside the CSV file. These need to be removed since the program automatically puts white spaces between words instead of pasting them into one giant string (\autoref{apx:first}). Failing to do so would result in temporal features being assigned to empty strings (A temporal-annotated sentence without removal of prior white spaces would result in \$GEST-NM\textasciicircum|430 |230 FEHLER1*|450 |400 \$GEST\textasciicircum|400).
+Using the ELAN software $7$ of the $11$ tiers were selected and converted into a CSV file. This creates $2$ distinct CSV files that were consequently merged (\autoref{apx:first}). Due to having merged the files, there are no longer multiple persons in the data set, instead, the data set has transformed into a contextless database. Due to being able to access the timeline in ELAN \cite{elan_software}, it is possible to extract the temporal features of a given annotation. As mentioned before the annotators decided to add gaps between the signs (\citealp{hankesegmentation}; \citealp{konradoffentliches}), this has been carried over into the EAF-files, resulting in empty rows inside the CSV file. These need to be removed since the program automatically puts white spaces between words instead of pasting them into one giant string (\autoref{apx:first}). Failing to do so would result in temporal features being assigned to empty strings (A temporal-annotated sentence without removal of prior white spaces would result in \$GEST-NM\textasciicircum|430 |230 FEHLER1*|450 |400 \$GEST\textasciicircum|400).
 
 \subsubsection{Data splitting}
 
@@ -232,11 +235,11 @@ An unwanted side-effect of the \texttt{train\_test\_dev.py} \cite{dimitarshterio
 
 \subsubsection{BPE}
 
-Byte Pair Encoding (BPE) is a general-purpose data compression algorithm \cite{sennrich2015neural} \cite{gage1994new}. The way it works is by replacing the most frequent pair of bytes in a sequence with unused bytes, in the case of the OpenNMT Byte Pair Encoding \cite{klein-etal-2017-opennmt} scripts the unused bytes were denoted in the data files as "@@ ". The advantages of using the BPE algorithm are:
+Byte Pair Encoding (BPE) is a general-purpose data compression algorithm (\citealp{sennrich2015neural};  \citealp{gage1994new}). The way it works is by replacing the most frequent pair of bytes in a sequence with unused bytes, in the case of the OpenNMT Byte Pair Encoding \cite{klein-etal-2017-opennmt} scripts the unused bytes were denoted in the data files as "@@ ". The advantages of using the BPE algorithm are:
 
 \begin{enumerate}
     \item \textbf{Memory}. In the case of German, many words start with the unit "auf", by encoding this unit by only using $1$ symbol, the system only encounters one symbol instead of $3$. \cite{gage1994new}
-    \item \textbf{Out-of-vocabulary words (OOV)}. Taking into account the previous example, since the unit "auf" has been replaced by $1$ symbol encountering it will be familiar. This is because BPE allows for the encoding of rare words and will not introduce any unrecognised tokens. \cite{gage1994new} \cite{sennrich2015neural}
+    \item \textbf{Out-of-vocabulary words (OOV)}. Taking into account the previous example, since the unit "auf" has been replaced by $1$ symbol encountering it will be familiar. This is because BPE allows for the encoding of rare words and will not introduce any unrecognised tokens. (\citealp{gage1994new}; \citealp{sennrich2015neural})
 \end{enumerate}
 
 Before being passed to the pre-processing and training, the data, except for the test.trg-file, was passed through a modified form of the BPE-algorithm. In normal circumstances when using BPE it caused no problems, however, when applying BPE to data containing temporal word features it would split the word on the "|" character. The modified algorithm first double checks whether or not there is a temporal feature added to the word and if there is will join the word and its respective temporal feature together (\autoref{apx:bpemod}). Applying \texttt{remove\_whitespace.py} on the data files significantly increases the BLEU-score for the Baseline model, while the old Baseline (pre-BPE, post-removal) had a BLEU score 2.15, the new Baseline (post-BPE, post-removal) had a BLEU-score of 3.69. It was therefore decided to use the Byte Pair Encoding algorithm to compress the data files. 
@@ -362,7 +365,7 @@ The baseline experiment consisted of $4$ sub-experiments, the results are shown 
 \textbf{Model Predicted Sentence} & Meine Mutter und mein Bruder, der ja auch hörend war.                                                                                     \\
 \textbf{Test Reference Sentence}  & Ja, MAMA und PAPA, oder so PAPA, PAPA, OPA, OMA.                                                                                         
 \end{tabular}
-
+\bottomrule
 \label{tab:baseline_translation}
 \end{table}
 
@@ -404,7 +407,7 @@ The baseline experiment consisted of $4$ sub-experiments, the results are shown 
 
 \subsection{Experiments}
 
-The second experiment was performed to answer the question whether or not adding temporal data into the source files would aid in the performance of the model. The translations generated by the temporal model got a BLEU-score of 2.85 and a TER score of 0.97. When compared to the baseline system this 
+The second experiment was performed to answer the question whether or not adding temporal data into the source files would aid in the performance of the model. The translations generated by the temporal model received a BLEU-score of 2.85 and a TER of 0.97. When compared to the baseline system this a decrease of 22.8\% in BLEU-score and a similar TER score, an example of a generated translation can be seen in (\autoref{tab:temporal_translation}). 
 
 \begin{table}[h]
 \centering
@@ -413,11 +416,13 @@ The second experiment was performed to answer the question whether or not adding
 \begin{tabular}{ll}
 \textbf{Original Gloss Input}     &MAMA1A*|120 PAPA8*|340 \$GEST\textasciicircum{}|60 PAPA1B*|260 OMA1C*|120  \\
 \textbf{Model Predicted Sentence} & Das ist meine Mama und meine Mama und meine Mama meine Oma  \\     
-\textbf{Test Reference Sentence}  & Ja, MAMA und PAPA, oder so PAPA, PAPA, OPA, OMA.              \\                                                                           
+\textbf{Test Reference Sentence}  & Ja, MAMA und PAPA, oder so PAPA, PAPA, OPA, OMA.              \\                       \bottomrule                                                    
 \end{tabular}
 
 \label{tab:temporal_translation}
 \end{table}
+
+The third experiment was performed to answer the question whether vocal data would aid in the performance of the baseline model. The results show a BLEU-score of 2.03 which is a decrease of 45.0\% compared to the baseline. The calculated Translation Error Rate on the model is 1, the maximum rate since TER-scores are between 0 and 1, suggesting that a high number of edits was necessary to reach the reference. A practical example of this can be seen in (\autoref{tab:vocal_translation}). Research, however, suggests vocal utterances of deaf individuals are a strong indication of meaning \cite{kristoffersen2016designing}.
 
 % ----------------------------
 \begin{table}[h]
@@ -425,9 +430,11 @@ The second experiment was performed to answer the question whether or not adding
 \caption{Showing the translation results of the vocal model, the original input is the input of the glosses in accordance to the gloss conventions with embedded vocal features denoted by |mouthing. The sentences of the model seem to be quite a bit more basic as compared to the baseline and temporal experiments.}
 
 \begin{tabular}{ll}
+
 \textbf{Original Gloss Input}     & GUT1*|nan TOLL1A|toll GLÜCK1*|glück GUT1*|nan \\
 \textbf{Model Predicted Sentence} & Das war sehr gut.                                                                                     \\
-\textbf{Test Reference Sentence}  & Gut, das ist toll. Du hattest Glück.        \\                                                                                 
+\textbf{Test Reference Sentence}  & Gut, das ist toll. Du hattest Glück.        \\                                      
+\bottomrule
 \end{tabular}
 
 \label{tab:vocal_translation}
@@ -435,7 +442,7 @@ The second experiment was performed to answer the question whether or not adding
 
 % --------------------------
 
-
+The fourth and final experiment was performed to answer the question on whether or not combining the third and fourth experiment would aid in the performance of a gloss to text machine translation system. Results show a BLEU-score of 1.69, which is a decrease of 54.2\% compared to the baseline. The calculated TER on the model is 0.97, while a small increase compared to the baseline. Surprisingly, however, while being worse compared to the baseline the combined TER was on par with the temporal experiment and better compared to the vocal experiment. An example of the translation can be found in (\autoref{tab:combined_translation}).
 \begin{table}[h]
 \centering
 \caption{Showing the translation results of the combined experiment, the original input is the input of the glosses in accordance to the gloss conventions with embedded vocal temporal features denoted by |mouthing|NUMBER. As is shown the sentence does not resemble the reference sentence anymore.}
@@ -443,11 +450,14 @@ The second experiment was performed to answer the question whether or not adding
 \begin{tabular}{ll}
 \textbf{Original Gloss Input}     & GUT1*|nan|100 TOLL1A|toll|440 GLÜCK1*|glück|160 GUT1*|nan|160 \\
 \textbf{Model Predicted Sentence} & Das ist wirklich gefährlich..                                                                                     \\
-\textbf{Test Reference Sentence}  & Gut, das ist toll. Du hattest Glück.                                                                                        
-\end{tabular}
+\textbf{Test Reference Sentence}  & Gut, das ist toll. Du hattest Glück.                                                
 
+\end{tabular}
+\bottomrule
 \label{tab:combined_translation}
 \end{table}
+
+It was hypothesised that vocal utterances would in fact aid more in the performance of a machine translation system. However, results have shown the contrary, a simple non-aided baseline model outperforms the aided models by as much as 50\%. The vocal experiment has by far the worst TER rate, especially considering the maximum rate is 1 (or 100\%).
 
 \pgfplotstableread[row sep=\\,col sep=&]{
     Model &      carT         \\
@@ -495,7 +505,7 @@ The second experiment was performed to answer the question whether or not adding
     }\mydata
 
 \begin{figure}[h!]
-\caption{Showing the results from the $4$ performed experiments. On the X-axis the different models are presented. On the Y-axis the score is shown, the calculation and description of the Translation Error Rate is described in Section 4.6}
+\caption{Showing the results from the $4$ performed experiments. The range of the TER is [0, 1] while 0 is without any edits and 1 with a lot. On the X-axis the different models are presented. On the Y-axis the score is shown, the calculation and description of the Translation Error Rate is described in Section 4.6}
 \begin{tikzpicture}
     \begin{axis}[
             ybar,
@@ -511,7 +521,7 @@ The second experiment was performed to answer the question whether or not adding
             nodes near coords align={vertical},
             ymin=0.9,ymax=1.05,
             xlabel={\/Models},
-            ylabel={\/Score},
+            ylabel={\/Rate},
         ]
         \addplot table[x=Model,y=carD]{\mydata};
         \legend{TER}
@@ -524,15 +534,21 @@ The second experiment was performed to answer the question whether or not adding
 
 
 \section{Discussion}
+
+The goal of this thesis paper was to research to what extent temporal data aids in the performance of a machine translation system for sign language to text. This goal was divided into several smaller sub-goals. Firstly, it was
+
 waarom zijn de resultaten er wat is de hypothesis iets meer analytical
 
 Challenges/problems
 What are your trial and errors
 1. the failure of google colab
 2. the failure of mariannmt
-3. temporal bpe
-4. bpe not being available with vocal and combined
-5. encoding
+3. encoding
+
+acknowledge limitations:
+-temopral bpe
+-bpe not being available with vocal and combined
+
 
 alternative ideas:
 standardisation - reject all gloss conventions
