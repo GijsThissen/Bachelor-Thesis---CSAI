@@ -21,10 +21,17 @@ Sign languages are languages that have their own unique grammar, words and manne
 
 \section{Introduction}
 
-Contrary to popular belief sign language and spoken language are not one in the same, in fact, sign language has its own words and grammar \cite{camgoz2018neural} that are completely separate from its regional counterpart. The hearing-impaired, users of sign language, use signs as their day to day communication. This is done by the use of spatial-temporal gestures to overlay pieces of information
+Contrary to popular belief sign language and spoken language are not one in the same. In fact, sign language has its own words and grammar (\citealp{camgoz2018neural}; \citealp{stokoe2005sign}) that are completely separate from its regional counterpart. The earliest attested use of sign language can be found in Plato's Cratylus (\cite{sedley2003plato} as cited in \cite{ruben2005sign}).  The hearing-impaired, users of sign language, use signs as their day to day communication \cite{perniss2007}. This is done by the use of spatial-temporal gestures to communicate pieces of information.  However, communication between the hearing-impaired and the hearing can prove to be difficult \cite{meadow1981interactions} when both of them do not know the others language. To solve this problem, end-to-end machine translation models have been developed for recognize gestures and translate them directly to text \cite{de2020sign}. Sign recognition systems work by isolating different signs from each other, something that has proven to be difficult due to the existence of a transitional period between signs \cite{konradoffentliches} (See Section 3.4 about Segmentation for more details). Both the transitional period as the sign take time to perform.
+sign take time
+temporal data
+talk about how humans talk
+vocal and mouthing in deaf people
 
-\cite{stokoe2005sign}
-sign language us actually a language
+
+
+
+\cite{garcia2016factored}
+
 
 
 \subsection{Research Question}
@@ -163,7 +170,7 @@ When creating a corpus there is an intrinsic need to have conventions in place t
     \item In the field of Linguistics or more specifically in the field of lexicography, a lexical item forms the basic element of the lexicon of a language. Lexical signs are treated as items, that is as units of their respective sign language that would be found in the dictionary \cite{konradoffentliches}. When a deaf person signs SQUARE1\textasciicircum  it may mean different things such as a map, a recipe, or a page. In DGS \cite{perniss2007space} and several other European Sign Languages signs are iconically motivated \cite{pietrandrea2002iconicity} \cite{oomen2017iconicity}, meaning that there is a similarity between the form of the sign and the meaning of the sign. In the DGS corpus, type glosses are given an indication of iconic value by using a circumflex at the end: "SQUARE1\textasciicircum ". Examples of child types to the SQUARE1\textasciicircum parent type are: FORM1, MIRROR2, and PAPER4, these and all other non-circumflex glosses are subtypes. The numbers denote different lexical variants.
     \item Fully iconically motivated signs, also known as poly-morphemic signs, are denoted as productive signs in contrast to lexical signs that denote something instead of meaning. Productive signs, therefore, have a \$PROD token \cite{konradoffentliches}
     \item Due to the anonymisation laws present in Germany, where this corpus was created, all names are replaced by "\$NAME". Except when it concerns a famous person the \$NAME gloss is followed by the person's name. \cite{konradoffentliches}
-    \item Foreign language elements are represented using the INTS token, for example, when signing the English word Germany instead of "Deutschland" it has been written as GERMANY-INST1.\cite{konradoffentliches}
+    \item Foreign language elements are represented using the INTS token, for example, when signing the English word Germany instead of "Deutschland" it has been written as GERMANY-INST1. (\citealp{kellett2008english}; \citealp{konradoffentliches})
     \item In German Sign Language it is conventional to use a one-handed manual alphabet, for example when spelling out someone's name. For these situations, the \$ALPHA token is used. Numbers are presented similarly by using \$NUM. \cite{konradoffentliches}  
 \end{itemize}
 
@@ -318,22 +325,10 @@ Translation Edit Rate (TER) measures the amount of editing that needs to be done
 
 
 
+
 \section{Results}
 
-At the beginning of this paper it was hypothesised that with the insertion of temporal data into the baseline data, there would be an improvement regarding the accuracy rate of model. Additionally it was hypothesised in a sub-hypothesis that the addition of a vocal token would increase the accuracy of the model (See Section 4.1.3 on the scientific background). For these reasons $4$ experiments were set up, the baseline, temporal (baseline + time), vocal (baseline + vocal), and combined (baseline + vocal + time). 
-
-say what the table and figures show
-
-talk about the improvement with the preprocessing of the baseline
-talk about the standardization experiment
-
-talk about the ter score staying the same and possibly why
-
-talk what is going on in the graphs
-
-geef voorbeelden van de vertalingen
-
-\begin{table}
+\begin{table}[h]
     \caption{Best performing models with the accompanying BLEU- and TER-scores. Highlighted in bold are the best results. As can be seen in the table the baseline outperforms all other models.}
     \label{tab:results}
     \begin{tabular}{llrr}
@@ -349,6 +344,109 @@ geef voorbeelden van de vertalingen
         
     \end{tabular}
     
+\end{table}
+
+
+At the beginning of this paper it was hypothesised that with the insertion of temporal data into the baseline data, there would be an improvement regarding the accuracy rate of model. Additionally it was hypothesised in a sub-hypothesis that the addition of a vocal token would increase the accuracy of the model (See Section 4.1.3 on the scientific background). For these reasons $4$ experiments were set up, the baseline, temporal (baseline + time), vocal (baseline + vocal), and combined (baseline + vocal + time). These experiments were performed, on each of them their respective BLEU-1 and TER score were calculated these results are presented in (\autoref{tab:results}). Histogram plots are shown in Figure 9 and 10 to compare the scores to each other and see any possible trends between them.
+
+\subsection{Baseline fine-tuning}
+
+The baseline experiment consisted of $4$ sub-experiments, the results are shown in (\autoref{fig:hyperparameter}). The first experiment that was run, ran on basic hyperparameters, such as a learning rate of 0.01, however, this architecture was abandoned in favor of mimicking the original transformer architecture. The results improved by 17.6\% (1.12 -> 1.36). The fine-tuning of the third experiment had to do with the pre-processing. In both the first and second experiment a oversight was made regarding empty lines in the data files, these would result in sentences being learned for empty source lines. Deleting these lines improved the results by 36.7\% (1.36 -> 2.15). The fourth and final experiment was tuned by applying the BPE algorithm \cite{gage1994new} (see section 4.2.3). The results improved by a total of 41.7\% (2.15 -> 3.69). The translated text of final baseline translation model had a BLEU-score of 3.69 and a TER score of 0.960, an example is shown in (\autoref{tab:baseline_translation}). The former is an improvement of 69.6\% compared to the non-tuned baseline, while showing a general trend of improvement across the sub-experiments. When the BLEU-score is 3.69 and the TER score 0.960 are compared to contemporary research they are below average.  However, of the $4$ conducted experiments the baseline model had the best performance.
+
+\begin{table}[h]
+\centering
+\caption{Showing the translation results of the baseline model, the original input is the input of the glosses in accordance to the gloss conventions. While the test reference sentence is more strict and solely presents a sentence using und and oder. The predicted sentence is more in context of the conversation about deafness. }
+
+\begin{tabular}{ll}
+\textbf{Original Gloss Input}     & MAMA1A* PAPA8* \$GEST\textasciicircum{} PAPA1B* OMA1C* \\
+\textbf{Model Predicted Sentence} & Meine Mutter und mein Bruder, der ja auch hörend war.                                                                                     \\
+\textbf{Test Reference Sentence}  & Ja, MAMA und PAPA, oder so PAPA, PAPA, OPA, OMA.                                                                                         
+\end{tabular}
+
+\label{tab:baseline_translation}
+\end{table}
+
+\pgfplotstableread[row sep=\\,col sep=&]{
+    Model &      carT         \\
+    1st     & 1.12  \\
+    2nd     & 1.36  \\
+    3rd   & 2.15      \\
+    4th   & 3.69    \\
+    }\mydata
+
+\begin{figure}[h!]
+\caption{Showing the BLEU-scores from the $4$ performed sub-experiments. The description of the experiments can be found in section 5.1. Over all there is a trend of improvement along the fine-tuning of the model.  On the X-axis the different models are presented. On the Y-axis the score is shown, the calculation and description of the BLEU score is described in Section 4.5)}
+\begin{tikzpicture}
+    \begin{axis}[
+            ybar,
+            title={Improvements of the baseline (BLEU-Score vs. Model)},
+            bar width=.6cm,
+            width=.8\textwidth,
+            height=.5\textwidth,
+            legend style={at={(0.5,1)},
+                anchor=north,legend columns=-1},
+            symbolic x coords={1st, 2nd, 3rd, 4th},
+            xtick=data,
+            nodes near coords,
+            nodes near coords align={vertical},
+            ymin=0,ymax=4,
+            xlabel={\/Models},
+            ylabel={\/Score},
+        ]
+        \addplot table[x=Model,y=carT]{\mydata};
+        \legend{BLEU-score}
+    \end{axis}
+    
+\end{tikzpicture}
+
+\label{fig:hyperparameter}
+\end{figure}
+
+\subsection{Experiments}
+
+The second experiment was performed to answer the question whether or not adding temporal data into the source files would aid in the performance of the model. The translations generated by the temporal model got a BLEU-score of 2.85 and a TER score of 0.97. When compared to the baseline system this 
+
+\begin{table}[h]
+\centering
+\caption{Showing the translation results of the baseline model, the original input is the input of the glosses in accordance to the gloss conventions with embedded temporal features denoted by |NUMBER. The model seems to break down while translating, with repeating the same word "Mama" over and over again.}
+
+\begin{tabular}{ll}
+\textbf{Original Gloss Input}     &MAMA1A*|120 PAPA8*|340 \$GEST\textasciicircum{}|60 PAPA1B*|260 OMA1C*|120  \\
+\textbf{Model Predicted Sentence} & Das ist meine Mama und meine Mama und meine Mama meine Oma  \\     
+\textbf{Test Reference Sentence}  & Ja, MAMA und PAPA, oder so PAPA, PAPA, OPA, OMA.              \\                                                                           
+\end{tabular}
+
+\label{tab:temporal_translation}
+\end{table}
+
+% ----------------------------
+\begin{table}[h]
+\centering
+\caption{Showing the translation results of the vocal model, the original input is the input of the glosses in accordance to the gloss conventions with embedded vocal features denoted by |mouthing. The sentences of the model seem to be quite a bit more basic as compared to the baseline and temporal experiments.}
+
+\begin{tabular}{ll}
+\textbf{Original Gloss Input}     & GUT1*|nan TOLL1A|toll GLÜCK1*|glück GUT1*|nan \\
+\textbf{Model Predicted Sentence} & Das war sehr gut.                                                                                     \\
+\textbf{Test Reference Sentence}  & Gut, das ist toll. Du hattest Glück.        \\                                                                                 
+\end{tabular}
+
+\label{tab:vocal_translation}
+\end{table}
+
+% --------------------------
+
+
+\begin{table}[h]
+\centering
+\caption{Showing the translation results of the combined experiment, the original input is the input of the glosses in accordance to the gloss conventions with embedded vocal temporal features denoted by |mouthing|NUMBER. As is shown the sentence does not resemble the reference sentence anymore.}
+
+\begin{tabular}{ll}
+\textbf{Original Gloss Input}     & GUT1*|nan|100 TOLL1A|toll|440 GLÜCK1*|glück|160 GUT1*|nan|160 \\
+\textbf{Model Predicted Sentence} & Das ist wirklich gefährlich..                                                                                     \\
+\textbf{Test Reference Sentence}  & Gut, das ist toll. Du hattest Glück.                                                                                        
+\end{tabular}
+
+\label{tab:combined_translation}
 \end{table}
 
 \pgfplotstableread[row sep=\\,col sep=&]{
@@ -429,10 +527,16 @@ geef voorbeelden van de vertalingen
 waarom zijn de resultaten er wat is de hypothesis iets meer analytical
 
 Challenges/problems
+What are your trial and errors
 1. the failure of google colab
 2. the failure of mariannmt
+3. temporal bpe
+4. bpe not being available with vocal and combined
+5. encoding
 
-What are your trial and errors
+alternative ideas:
+standardisation - reject all gloss conventions
+
 
 answer research question, hypothese
 
@@ -447,18 +551,13 @@ alternative bpe
 
 \section{Conclusion}
 
+
 \section{Self-Reflection}
 
 At first when I started this thesis, I didn't quite know what I was getting myself into, the careful planning it would involve, the research, the literature review it was all kind of new to me. While I experienced many of these concepts in the earlier parts of my bachelor combining them proved to be a difficult task. What proved especially difficult was the planning, since I am used to being able to do an assignment or learn for an exam within the span of a week, however, I learned that regarding a research project this is not the case. Especially since my topic is Deep Learning related it took careful planning and prediction on how long each particular experiment would take and whether it would fit within the time span I had. There were some foreseeable setbacks, mainly the introduction of CAPTCHA in Google Colab, that caused the experiments to take longer than expected that took me by surprise. Especially since I had to start from scratch again. What I learned from this was that my planning (dis)ability is the biggest bottleneck in my research. If I had planned out the experiments in a better way with doing a prototype beforehand these problems could have been avoided. There should have been better literature review on my part, mainly regarding the available architectures, instead of struggling with the dataset using the Phoenix dataset as described in \cite{camgoz2018neural} would have made for a better thesis. What I learned from this experience is that when it comes to research planning, prototyping and exploring is an essential, but for me at first surprising, part of the project.
-
-• Create programming code either for the purposes of new software or for data analysis and/or representation, in line with best practices and coding standards;
-
-• Report orally on the scientific and social-cultural merit of their project;
-
-• Write an academic report on the research;
-
-• Create a short video demonstration of the outcome of the project
-
+When it came to programming I had some prior experience regarding Deep Learning Neural Machine Translation, however, having prior experience does not equate a smooth ride. Mainly due to not exploring the available libraries well enough. I did not realize soon enough that the library I ended up using OpenNMT \cite{klein-etal-2017-opennmt} also supported word embedded features, therefore I decided upon MarianNMT \cite{mariannmt} a library that is both incompatible with my system and had to be run externally. Throughout the thesis I did start to learn not only how to use the libraries but also the inner-workings since I frequently had to adjust certain functions that were not suitable for my experiments. I often ran into trouble regarding certain parts of my code that would have easily been resolved if I had a variable explorer enabled. Furthermore, due to the thesis I had my first experience with reading a paper and applying its code instead of finding it on GitHub or there being a library present, something that was an insightful experience and will undoubtedly be useful in the future. As well as writing a proper README file in my GitHub repository \cite{gijsgithub} that gave me insight into how users would view my code.
+Before the start of this project my main focus when it came to NMT was related to Dutch to English translation, however when I started this thesis project I was immerged into the world of the deaf. Using sign language to communicate is really resilient, adapting to the situation you are in, and therefore deserves more scientific research done to the subject. Especially when it wasn't considered a language until fairly recently \cite{stokoe2005sign}. Having said that I thought it was quite hard to explain my thoughts on the subject especially in the Introduction and Related Works section as I was overwhelmed by all the information that came to me. Looking back I should have listened more to my supervisor when he said that we had to create a file with all the summaries of the papers that we read. Instead of doing that I had a bunch of different files on my PC, outside my PC, and inside my head that caused a giant mess. While this approach is considered acceptable when it comes to small essays, with a huge thesis paper this becomes an impossible task. What I learned from this is that I need to be more organised.
+While I do not have a problem with speaking in public, I do have trouble with speaking rehearsed text in public. Due to the COVID-19 restrictions present it made it more difficult since I couldn't look the listeners in the face making me stutter quite a bit. However, I learned from this experience that I have to know my text inside-out and I need to rehearse more.
 
 
 \input{bib-apx.tex}
