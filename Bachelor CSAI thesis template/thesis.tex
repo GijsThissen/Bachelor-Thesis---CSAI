@@ -311,7 +311,7 @@ The BLEU score ranges from 0 to 1, with 0 being absolutely not related to the re
 
 \subsection{TER}
 
-Translation Edit Rate (TER) measures the amount of editing that needs to be done to create an output that exactly matches a reference translation \cite{TERsnover2006}. There can be multiple TER-scores since it may match one of the references, however, since in this paper only one reference will be used this will not be considered a problem. The higher the TER-score the worse the translation, since the more edits on the total edits it needs to perform the closer it comes to $1$. The formula to calculate the TER-score is shown in (\autoref{fig:full_ter}). The number of edits is calculated in two different phases \cite{shapira2002edit}:
+Translation Edit Rate (TER) measures the amount of editing that needs to be done to create an output that exactly matches a reference translation \cite{TERsnover2006}. There can be multiple TER-scores since it may match one of the references, however, since in this paper only one reference will be used this will not be considered a problem. The higher the TER-score the worse the translation, since the more edits on the total edits it needs to perform. The formula to calculate the TER-score is shown in (\autoref{fig:full_ter}). The number of edits is calculated in two different phases \cite{shapira2002edit}:
 \begin{enumerate}
     \item A greedy search algorithm is used to find the words that need to be shifted from one place to another.
     \item An optimal calculation is made to calculate the smallest amount of remaining edits (insertion, deletion, and substitution) necessary to match the reference.
@@ -442,7 +442,7 @@ The third experiment was performed to answer the question whether vocal data wou
 
 % --------------------------
 
-The fourth and final experiment was performed to answer the question on whether or not combining the third and fourth experiment would aid in the performance of a gloss to text machine translation system. Results show a BLEU-score of 1.69, which is a decrease of 54.2\% compared to the baseline. The calculated TER on the model is 0.97, while a small increase compared to the baseline. Surprisingly, however, while being worse compared to the baseline the combined TER was on par with the temporal experiment and better compared to the vocal experiment. An example of the translation can be found in (\autoref{tab:combined_translation}).
+The final experiment was performed to answer the question on whether or not combining the third and fourth experiment would aid in the performance of a gloss to text machine translation system. Results show a BLEU-score of 1.69, which is a decrease of 54.2\% compared to the baseline. The calculated TER on the model is 0.97, while a small increase compared to the baseline. Surprisingly, however, while being worse compared to the baseline the combined TER was on par with the temporal experiment and better compared to the vocal experiment. An example of the translation can be found in (\autoref{tab:combined_translation}).
 \begin{table}[h]
 \centering
 \caption{Showing the translation results of the combined experiment, the original input is the input of the glosses in accordance to the gloss conventions with embedded vocal temporal features denoted by |mouthing|NUMBER. As is shown the sentence does not resemble the reference sentence anymore.}
@@ -457,7 +457,7 @@ The fourth and final experiment was performed to answer the question on whether 
 \label{tab:combined_translation}
 \end{table}
 
-It was hypothesised that vocal utterances would in fact aid more in the performance of a machine translation system. However, results have shown the contrary, a simple non-aided baseline model outperforms the aided models by as much as 50\%. The vocal experiment has by far the worst TER rate, especially considering the maximum rate is 1 (or 100\%).
+
 
 \pgfplotstableread[row sep=\\,col sep=&]{
     Model &      carT         \\
@@ -532,37 +532,33 @@ It was hypothesised that vocal utterances would in fact aid more in the performa
 \label{fig:results_ter}
 \end{figure}
 
-
+\break
 \section{Discussion}
 
-The goal of this thesis paper was to research to what extent temporal data aids in the performance of a machine translation system for sign language to text. This goal was divided into several smaller sub-goals. Firstly, it was
+The goal of this thesis paper was to research to what extent temporal data aids in the performance of a machine translation system for sign language to text. The hypothesis stated that it was to be expected, based on prior research \cite{konradoffentliches}, for temporal and vocal embeddings to increase the systems performance.
 
-waarom zijn de resultaten er wat is de hypothesis iets meer analytical
+\subsection{Research findings}
 
-Challenges/problems
-What are your trial and errors
-1. the failure of google colab
-2. the failure of mariannmt
-3. encoding
+Using factored neural machine translation a NMT system was created that could with the aid of temporal features translate sign glosses to text. It was shown that while the baseline performed below average \cite{vaswani2017attention} on the machine translation of sign glosses to text, the addition of temporal and vocal features did not aid in increasing the accuracy of the model. In fact, the addition of temporal and vocal data decreased the baseline BLEU score by as much as 50\%. The results suggest that neither temporal nor vocal data aids in the performance of a machine translation system for sign language glosses to text.
 
-acknowledge limitations:
--temopral bpe
--bpe not being available with vocal and combined
+\subsection{Results}
 
+The hypothesis stated that the use of token data (be it temporal or vocal) would help increase the accuracy of the baseline model. The results show the contrary, a non-aided simple gloss to text translation system outperformed the aided temporal and vocal systems. It was hypothesised that vocal utterances would in fact aid more in the performance of a machine translation system. However, the baseline system outperforms the vocal system by as much as 45\%. The vocal experiment has the worst TER rate, especially considering the maximum rate is 1. The reason for this drop in performance is likely due to two aspects: 
 
-alternative ideas:
-standardisation - reject all gloss conventions
+\begin{enumerate}
+    \item \textbf{The lack of data} Because of the small size of the corpus only barely enough data was used to train the system, this in combination with small hardware capabilities compared to contemporary research heavily decreased the expected accuracy. As was suggested in \citet{qi2018and}, word features are the most efficient in models trained on small datasets. However, if the dataset is at the bare minimum, it shows a significant drop-off in efficiency results. The lower performance of the temporal, vocal, and combined experiments supports this claim. 
+    \item \textbf{Increase in vocabulary, decrease in commonality} Because of the non-standardization of the tokens (i.e.: |40, |200 instead of |time\_0-200) the vocabulary increased exponentially, giving the model not many common words to train on and increasing the amount of OOV-words. A major flaw in the research was choosing the wrong dataset. Since the DGS Corpus \cite{dgscorpus_3} was created for purposes of conservation, it over-represented local dialects. This resulted in the model upon translation receiving more unknown words. This is caused by, for example, the sign Kuh (Cow) being a different between Nordrhein-Westfalen and Sachsen.
+\end{enumerate}
 
+Another reason might be because of the vocal and combined data files being pre-processed differently, due to the incompatibility of the BPE algorithm with the embeddings. Therefore, it was decided to not utilize the algorithm for these systems. This is clearly shown in the results, however, the average increase in BLEU score after the use of the algorithm was shown to be around 40\%. Even if the BPE algorithm was applied on the Vocal and Combined in the ideal circumstance would increase their respective scores to 2.8 and 2.5. This could be solved by creating a library that has the feature for BPE embedded into its code, like MarianNMT \cite{mariannmt}. While MarianNMT was considered for the purposes of this Thesis, due to the restrictions applied by Google Colab and its incompatibility with Microsoft Windows 10, the use of MarianNMT was discontinued. Preliminary results showed a substantially lower BLEU-score compared to the OpenNMT-pipeline, presumably caused by its lack of running time and insufficient hyperparameters.
 
-answer research question, hypothese
+\subsection{Alternatives and Future Research}
 
-gebarentaal dialect neit meegomen
+The results suggest that neither temporal nor vocal data aids in the performance of a machine translation system for sign language glosses to text. Supporting the results found by \citealt{camgoz2018neural}; \citealt{qi2018and}. The research therefore sits among an increasingly growing literature suggesting that embedding words into a NMT system increases the accuracy rate of the model.
 
-schrijf een stuk over wat er gebeurt als je dat hele ding standardised
+Future research should be conducted into different forms of pre-processing the tokens. By the grouping of tokens into small subgroups there might be a reduction in over-diversity in the vocabulary, where as in this paper the words could be paired with temporal features spanning the range from 0 to 1000, having 5 distinct groups could possibly have an effect on the performance of the system.
 
-alternative bpe
-
-
+A suggested alternative baseline is performed by the stripping of the gloss-conventions \cite{konradoffentliches} from the data files. Preliminary results show that an improvement of 11.3\% compared to the current baseline, however, that would undermine the concept of sign language and return to SLR style translation  by not taking into account linguistical aspects \cite{camgoz2018neural}. Therefore, future research should focus on the creation and standardisation of an annotated German Sign Language corpus using less diverse tokens while maintaining proper grammar by proper sentence creation.
 
 
 \section{Conclusion}
@@ -570,7 +566,7 @@ alternative bpe
 
 \section{Self-Reflection}
 
-At first when I started this thesis, I didn't quite know what I was getting myself into, the careful planning it would involve, the research, the literature review it was all kind of new to me. While I experienced many of these concepts in the earlier parts of my bachelor combining them proved to be a difficult task. What proved especially difficult was the planning, since I am used to being able to do an assignment or learn for an exam within the span of a week, however, I learned that regarding a research project this is not the case. Especially since my topic is Deep Learning related it took careful planning and prediction on how long each particular experiment would take and whether it would fit within the time span I had. There were some foreseeable setbacks, mainly the introduction of CAPTCHA in Google Colab, that caused the experiments to take longer than expected that took me by surprise. Especially since I had to start from scratch again. What I learned from this was that my planning (dis)ability is the biggest bottleneck in my research. If I had planned out the experiments in a better way with doing a prototype beforehand these problems could have been avoided. There should have been better literature review on my part, mainly regarding the available architectures, instead of struggling with the dataset using the Phoenix dataset as described in \cite{camgoz2018neural} would have made for a better thesis. What I learned from this experience is that when it comes to research planning, prototyping and exploring is an essential, but for me at first surprising, part of the project.
+At first when I started this thesis, I didn't quite know what I was getting myself into. The careful planning it would involve, the research, the literature review it was all kind of new to me. While I experienced many of these concepts in the earlier parts of my bachelor combining them proved to be a difficult task. What proved especially difficult was the planning, since I am used to being able to do an assignment or learn for an exam within the span of a week, however, I learned that regarding a research project this is not the case. Especially since my topic is Deep Learning related it took careful planning and prediction on how long each particular experiment would take and whether it would fit within the time span I had. There were some foreseeable setbacks, mainly the introduction of CAPTCHA in Google Colab, that caused the experiments to take longer than expected that took me by surprise. Especially since I had to start from scratch again. What I learned from this was that my planning (dis)ability is the biggest bottleneck in my research. If I had planned out the experiments in a better way with doing a prototype beforehand these problems could have been avoided. There should have been better literature review on my part, mainly regarding the available architectures, instead of struggling with the dataset using the Phoenix dataset as described in \cite{camgoz2018neural} would have made for a better thesis. What I learned from this experience is that when it comes to research planning, prototyping and exploring is an essential, but for me at first surprising, part of the project.
 When it came to programming I had some prior experience regarding Deep Learning Neural Machine Translation, however, having prior experience does not equate a smooth ride. Mainly due to not exploring the available libraries well enough. I did not realize soon enough that the library I ended up using OpenNMT \cite{klein-etal-2017-opennmt} also supported word embedded features, therefore I decided upon MarianNMT \cite{mariannmt} a library that is both incompatible with my system and had to be run externally. Throughout the thesis I did start to learn not only how to use the libraries but also the inner-workings since I frequently had to adjust certain functions that were not suitable for my experiments. I often ran into trouble regarding certain parts of my code that would have easily been resolved if I had a variable explorer enabled. Furthermore, due to the thesis I had my first experience with reading a paper and applying its code instead of finding it on GitHub or there being a library present, something that was an insightful experience and will undoubtedly be useful in the future. As well as writing a proper README file in my GitHub repository \cite{gijsgithub} that gave me insight into how users would view my code.
 Before the start of this project my main focus when it came to NMT was related to Dutch to English translation, however when I started this thesis project I was immerged into the world of the deaf. Using sign language to communicate is really resilient, adapting to the situation you are in, and therefore deserves more scientific research done to the subject. Especially when it wasn't considered a language until fairly recently \cite{stokoe2005sign}. Having said that I thought it was quite hard to explain my thoughts on the subject especially in the Introduction and Related Works section as I was overwhelmed by all the information that came to me. Looking back I should have listened more to my supervisor when he said that we had to create a file with all the summaries of the papers that we read. Instead of doing that I had a bunch of different files on my PC, outside my PC, and inside my head that caused a giant mess. While this approach is considered acceptable when it comes to small essays, with a huge thesis paper this becomes an impossible task. What I learned from this is that I need to be more organised.
 While I do not have a problem with speaking in public, I do have trouble with speaking rehearsed text in public. Due to the COVID-19 restrictions present it made it more difficult since I couldn't look the listeners in the face making me stutter quite a bit. However, I learned from this experience that I have to know my text inside-out and I need to rehearse more.
